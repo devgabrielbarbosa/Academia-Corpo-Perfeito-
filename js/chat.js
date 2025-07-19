@@ -50,14 +50,16 @@ function iniciarChat() {
 }
 
 // Exibe a mensagem
+// Exibe a mensagem
 function exibirMensagemBot(mensagem) {
   const chat = document.getElementById("chat-messages"); // Corrigido aqui!
   const div = document.createElement("div");
   div.className = "chat-msg bot";
-  div.innerText = mensagem;
+  div.innerHTML = mensagem; // ← Aqui foi alterado
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
 }
+
 
 
 
@@ -90,20 +92,20 @@ if (p.includes("quebrado") || p.includes("quebrados") || p.includes("quebrada"))
 }
 
 
-  if (p.includes("funcionando") || p.includes("operacional") || p.includes("ativos") || p.includes("funcionando")) {
-    const operacionais = await buscarEquipamentosPorStatus("operacional");
-    return operacionais.length > 0
-      ? `Os equipamentos funcionando normalmente são: ${operacionais.join(", ")}.`
-      : "Nenhum equipamento está funcionando no momento.";
-  }
+ if (p.includes("funcionando") || p.includes("operacional") || p.includes("ativos")) {
+  const operacionais = await buscarEquipamentosPorStatus("operacional");
+  return operacionais.length > 0
+    ? `Os equipamentos funcionando normalmente são:${operacionais.join(",")}.`
+    : "Nenhum equipamento está funcionando no momento.";
+}
 
   // Respostas fixas (sem consultar Firebase)
-  if (p.includes("horário") || p.includes("funciona")) {
-    return "A academia funciona de segunda a sábado das 6h às 22h.";
+  if (p.includes("horário") || p.includes("funciona") || p.includes("horas") || p.includes("")) {
+    return "A academia funciona de segunda a sexta das 6h às 22h e aos sabados das 8h às 16h.";
   }
 
   if (p.includes("planos") || p.includes("mensalidade") || p.includes("preço")) {
-    return "Temos 3 planos: Básico R$ 69,90, Plus R$ 99,90 e Premium R$ 129,90.";
+    return "Temos 3 planos: Básico R$ 69,90, e também temos o plano Plus R$ 99,90 e o plano Premium R$ 129,90.";
   }
 
   if (p.includes("musculação")) {
