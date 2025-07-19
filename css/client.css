@@ -8,7 +8,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   background: #f8f8f8;
 }
 
@@ -33,7 +33,15 @@ img {
   cursor: pointer;
   user-select: none;
 }
-
+h1{
+  text-align: center;
+  font-size: 3rem;
+  margin-top: 20px;
+  color: #ffd400;
+}
+h2{
+  margin-bottom: 20px;
+}
 .nav-bar {
   display: flex;
   align-items: center;
@@ -144,8 +152,10 @@ nav a:focus {
   z-index: 10;
 }
 
-.container h3 {
+.container h2 {
+  color: #FFD700;
   margin-bottom: 1rem;
+  font-size: 2rem;
 }
 
 form label {
@@ -262,32 +272,35 @@ form button:disabled {
 /* ================================
    PLANOS-OFERECIDOS
 ================================= */
-.secao-planos {
-  padding: 40px 20px;
-  background: #f9f9f9;
-  text-align: center;
-}
 
-.secao-planos h2 {
-  font-size: 2rem;
-  margin-bottom: 30px;
-  color: #333;
+/* Cores diferentes */
+#planos{
+  margin-top: 3rem;
 }
-
-.cards-planos {
+#planos h1 {
+  color: #FFD700;
+}
+.planos-container {
+  margin-top: 2rem;
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 1rem;
+  padding: 1rem;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .card-plano {
-  background: #fff;
-  border-radius: 15px;
-  padding: 25px;
-  width: 300px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+  background-color: #1c1c1c;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  padding: 2rem;
+  max-width: 300px;
   transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card-plano:hover {
@@ -295,31 +308,81 @@ form button:disabled {
 }
 
 .card-plano h3 {
-  font-size: 1.4rem;
-  color: #222;
-  margin-bottom: 10px;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
 }
 
 .card-plano .preco {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #007bff;
-  margin-bottom: 15px;
+  font-size: 1.4rem;
+  color: var(--cor-destaque);
+  margin-bottom: 1rem;
 }
 
 .card-plano ul {
   list-style: none;
   padding: 0;
-  margin: 0 0 20px;
+  margin: 1rem 0;
+  text-align: left;
 }
 
 .card-plano ul li {
-  margin: 8px 0;
-  color: #444;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
 }
 
 .btn-contratar {
-  background: #007bff;
+  margin-top: auto;
+  background-color: var(--cor-destaque);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-contratar:hover {
+  background-color: #e6c200;
+}
+
+/* Cores personalizadas para cada plano */
+.plano-basico {
+  background: #ffcc00; /* Amarelo vibrante */
+  color: #000;         /* Texto preto para contraste */
+}
+
+.plano-plus {
+  background: #ff9900; /* Laranja forte */
+  color: #000;
+}
+
+.plano-premium {
+  background: #222222; /* Preto quase total */
+  color: #FFD700;      /* Dourado no texto */
+  font-weight: bold;
+  border: 2px solid #FFD700;
+}
+.plano-basico,
+.plano-plus,
+.plano-premium {
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+  text-align: center;
+}
+
+.plano-basico:hover,
+.plano-plus:hover,
+.plano-premium:hover {
+  transform: scale(1.03);
+  cursor: pointer;
+}
+
+
+.btn-contratar {
+  background: #1500ff;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -331,10 +394,6 @@ form button:disabled {
 
 .btn-contratar:hover {
   background: #0056b3;
-}
-
-.destaque {
-  border: 2px solid #007bff;
 }
 
 /* ================================
@@ -449,11 +508,12 @@ footer {
   color: #000000;
 }
 
-.mapa-localizacao h2 {
+ h2 {
   font-size: 2rem;
   margin-bottom: 10px;
   color: #FFD400; /* amarelo estilo Smart Fit */
   margin: 40px;
+  text-align: center;
 }
 
 .mapa-container {
@@ -561,6 +621,9 @@ footer {
     z-index: 100;
     width: 100%;
   }
+  h1, h2{
+    font-size: 2rem;
+  }
 
   nav.show {
     display: flex;
@@ -618,6 +681,19 @@ footer {
   margin-top: 20px;
   width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+.planos-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  margin: 0 auto;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 }

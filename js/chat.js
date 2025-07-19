@@ -35,8 +35,31 @@ btnToggle.addEventListener("click", () => {
   } else {
     chatbot.style.display = "flex";
     inputChat.focus();
+    
+    // Só mostrar a mensagem se ainda não tiver nenhuma
+    if (divMensagens.children.length === 0) {
+      iniciarChat(); // 👈 mensagem de boas-vindas
+    }
   }
 });
+
+
+// Ao abrir o chat
+function iniciarChat() {
+  exibirMensagemBot("Olá! Eu sou o MaxFit, seu assistente virtual da Academia Corpo Perfeito. 💪 Em que posso te ajudar?");
+}
+
+// Exibe a mensagem
+function exibirMensagemBot(mensagem) {
+  const chat = document.getElementById("chat-messages"); // Corrigido aqui!
+  const div = document.createElement("div");
+  div.className = "chat-msg bot";
+  div.innerText = mensagem;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+
 
 // Função para adicionar mensagem na tela
 function adicionarMensagem(texto, classe) {
@@ -182,7 +205,9 @@ if (p.includes("quebrado") || p.includes("quebrados") || p.includes("quebrada"))
   if (p.includes("chatbot") || p.includes("funciona o chat")) {
     return "Sou seu assistente virtual para tirar dúvidas rápidas sobre a academia. 😄";
   }
-
+    if (p.includes("obrigado") || p.includes("muito obrigado")) {
+    return "Por nada! qual quer coisa estamos smp a disposição.😄";
+  }
   // Resposta padrão para perguntas não reconhecidas
   return "Desculpe, não entendi sua pergunta. Tente reformular ou pergunte sobre horários, planos, aulas ou equipamentos.";
 }
@@ -195,9 +220,24 @@ async function enviarMensagem() {
   adicionarMensagem(texto, "user");
   inputChat.value = "";
 
+  // Mostrar "Digitando..." antes da resposta real
+  adicionarMensagem("Digitando...", "bot");
+
   const resposta = await processarPergunta(texto);
-  adicionarMensagem(resposta, "bot");
+
+  setTimeout(() => {
+    // Remover a mensagem "Digitando..."
+    const todasMsgs = divMensagens.querySelectorAll(".chat-msg.bot");
+    const ultima = todasMsgs[todasMsgs.length - 1];
+    if (ultima && ultima.textContent === "Digitando...") {
+      ultima.remove();
+    }
+
+    // Adicionar a resposta real
+    adicionarMensagem(resposta, "bot");
+  }, 2000);
 }
+
 
 btnEnviar.addEventListener("click", enviarMensagem);
 inputChat.addEventListener("keydown", (e) => {

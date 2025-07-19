@@ -154,11 +154,14 @@ function iniciarMatriculas() {
 
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${dados.nome || "-"}</td>
-        <td>${nomePlano}</td>
-        <td>${dados.email || "-"}</td>
-        <td>${dados.telefone || "-"}</td>
-        <td><button onclick="removerMatricula('${docSnap.id}')">Remover</button></td>
+        <tr>
+  <td>${dados.nome || "-"}</td>
+  <td>${nomePlano}</td>
+  <td>${dados.email || "-"}</td>
+  <td>${dados.telefone || "-"}</td>
+  <td>${dados.cpf || "-"}</td> <!-- este é o campo do CPF -->
+  <td><button onclick="removerMatricula('${docSnap.id}')">Remover</button></td>
+</tr>
       `;
       listaMatriculas.appendChild(tr);
     });
@@ -190,6 +193,7 @@ async function cadastrarAluno() {
       plano: p, // grava o ID do plano
       email: e,
       telefone: t,
+      cpf: c,
       dataCadastro: serverTimestamp()
     });
 

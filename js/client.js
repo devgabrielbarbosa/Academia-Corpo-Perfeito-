@@ -57,11 +57,12 @@ form.addEventListener('submit', async e => {
   const nome  = document.getElementById('nome').value.trim();
   const tel   = document.getElementById('telefone').value.trim();
   const email = document.getElementById('email').value.trim();
+  const cpf = document.getElementById('cpf').value;
   const pagamento = document.getElementById('pagamento').value;
   const idPlano   = selectPlanos.value;
   const txtPlano  = selectPlanos.options[selectPlanos.selectedIndex].text;
 
-  if (!nome||!tel||!email||!pagamento||!idPlano) {
+  if (!nome||!tel||!email||!cpf||!pagamento||!idPlano) {
     return alert("Preencha todos os campos e escolha um plano.");
   }
 
@@ -70,6 +71,7 @@ form.addEventListener('submit', async e => {
       nome,
       telefone: tel,
       email,
+      cpf,
       formaPagamento: pagamento,
       planoId: idPlano,
       planoNome: txtPlano,

@@ -63,19 +63,60 @@
       loading="lazy"
       referrerpolicy="no-referrer-when-downgrade">
     </iframe>
-
-  </div>
   <h2>Venha nós fazer uma visita!</h2>
+  </div>
+<br>
+<br>
 </section>
 
 
-      </div>
-      <form id="form-matricula">
+      </div id="planos">
+      <h1>Conheça os nosso Planos</h1>
+    <section class="planos-container">
+  <div class="card-plano plano-basico" id="plano-basico">
+    <h3>Plano Básico</h3>
+    <p class="preco">R$ 69,90/mês</p>
+    <ul>
+      <li>🏋️‍♂️ Acesso total à musculação</li>
+      <li>🚴‍♂️ Aulas de spinning</li>
+      <li>🤸‍♀️ Treinamentos funcionais</li>
+    </ul>
+    <button class="btn-contratar" onclick="contratarPlano('plano-basico')">Contratar</button>
+  </div>
+
+  <div class="card-plano plano-premium" id="plano-premium">
+    <h3>Plano Premium</h3>
+    <p class="preco">R$ 129,90/mês</p>
+    <ul>
+      <li>✅ Tudo do Plano Plus</li>
+      <li>🏆 Personal Trainer exclusivo</li>
+      <li>📋 Dieta personalizada</li>
+    </ul>
+    <button class="btn-contratar" onclick="contratarPlano('plano-premium')">Contratar</button>
+  </div>
+  <div class="card-plano plano-plus destaque" id="plano-plus">
+    <h3>Plano Plus</h3>
+    <p class="preco">R$ 99,90/mês</p>
+    <ul>
+      <li>✅ Tudo do Plano Básico</li>
+      <li>🔥 Cross Training</li>
+      <li>💃 Aulas de Zumba</li>
+      <li>🥗 Acompanhamento nutricional</li>
+    </ul>
+    <button class="btn-contratar" onclick="contratarPlano('plano-plus')">Contratar</button>
+  </div>
+
+</section>
+
+      <form >
+        <h2 id="form-matricula">Quero me matricular</h2>
         <label for="nome">Nome completo:</label>
         <input type="text" id="nome" placeholder="Nome completo" required />
 
         <label for="telefone">Telefone/WhatsApp:</label>
         <input type="text" id="telefone" placeholder="Telefone/WhatsApp" required />
+          <label for="CPF">CPF:</label>
+        <input type="number" id="cpf" placeholder="Cpf" required />
 
         <label for="email">Email:</label>
         <input type="email" id="email" placeholder="Email" required />
@@ -88,7 +129,7 @@
 </select>
 
 
-<div id="servicos-plano"></div>
+        <div id="servicos-plano"></div>
         <div id="servicos-plano" style="margin-bottom: 1rem; font-weight: bold; font-style: italic; color: #555;">
           Escolha um plano para ver os serviços incluídos.
         </div>
@@ -105,46 +146,7 @@
       </form>
     </section>
 
-    <!-- Planos e Serviços -->
-    <section id="planos" class="secao-planos">
-      <h2>Planos e Serviços</h2>
-      <div class="cards-planos">
-        <div class="card-plano" id="plano-basico">
-          <h3>Plano Básico</h3>
-          <p class="preco">R$ 69,90/mês</p>
-          <ul>
-            <li>Musculação</li>
-            <li>Spinning</li>
-            <li>Aulas Funcionais</li>
-          </ul>
-          <button class="btn-contratar" onclick="contratarPlano('plano-basico')">Contratar</button>
-        </div>
-
-        <div class="card-plano destaque" id="plano-plus">
-          <h3>Plano Plus</h3>
-          <p class="preco">R$ 99,90/mês</p>
-          <ul>
-            <li>Todos do Básico</li>
-            <li>Cross Training</li>
-            <li>Zumba</li>
-            <li>Acompanhamento Nutricional</li>
-          </ul>
-          <button class="btn-contratar" onclick="contratarPlano('plano-plus')">Contratar</button>
-        </div>
-
-        <div class="card-plano" id="plano-premium">
-          <h3>Plano Premium</h3>
-          <p class="preco">R$ 129,90/mês</p>
-          <ul>
-            <li>Todos do Plus</li>
-            <li>Personal Trainer</li>
-            <li>Treino Feminino</li>
-            <li>Plano Dieta Exclusivo</li>
-          </ul>
-          <button class="btn-contratar" onclick="contratarPlano('plano-premium')">Contratar</button>
-        </div>
-      </div>
-    </section>
+   
 
     <!-- Serviços oferecidos -->
     <section class="servicos" id="servicos" aria-labelledby="titulo-servicos">
@@ -157,7 +159,6 @@
         <li><span>🏃‍♀️</span> Aulas Funcionais</li>
         <li><span>🥗</span> Acompanhamento Nutricional</li>
         <li><span>👨‍🏫</span> Personal Trainer</li>
-        <li><span>👩‍🦰</span> Treino Feminino</li>
       </ul>
     </section>
     <section>
