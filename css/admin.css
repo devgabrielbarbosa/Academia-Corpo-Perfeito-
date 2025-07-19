@@ -1,0 +1,175 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Cores principais */
+:root {
+  --cor-fundo: #121212;
+  --cor-destaque: #FFD400; /* amarelo Smart Fit */
+  --cor-texto: #ffffff;
+  --cor-botao: #FFD400;
+  --cor-input: #1e1e1e;
+  --cor-borda: #333;
+}
+
+/* Corpo da página */
+body {
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  padding: 20px;
+}
+
+/* Cabeçalho */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  color: var(--cor-destaque);
+  font-size: 2rem;
+}
+
+/* Containers principais */
+.container {
+  max-width: 800px;
+  margin: auto;
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #000;
+}
+
+/* Inputs e botões */
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid var(--cor-borda);
+  border-radius: 5px;
+  background-color: var(--cor-input);
+  color: var(--cor-texto);
+}
+
+button {
+  background-color: var(--cor-botao);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #e0c000;
+}
+
+/* Navegação em abas */
+nav.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+nav.tabs button {
+  flex: 1;
+  background: none;
+  border: 2px solid var(--cor-destaque);
+  color: var(--cor-destaque);
+  font-weight: bold;
+  margin: 0 5px;
+  border-radius: 30px;
+}
+
+nav.tabs button:hover {
+  background-color: var(--cor-destaque);
+  color: #000;
+}
+
+/* Tabelas */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  margin-top: 20px;
+  background-color: var(--cor-input);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid var(--cor-borda);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+th {
+  background-color: var(--cor-destaque);
+  color: #000;
+}
+
+/* Seções */
+.secao-ativa {
+  display: block;
+}
+
+#equipamentos, #alunos {
+  display: none;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .container {
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  nav.tabs {
+    flex-direction: column;
+  }
+
+  nav.tabs button {
+    margin: 5px 0;
+  }
+
+  input, select, button {
+    padding: 10px;
+    margin: 8px 0;
+  }
+
+  table {
+    font-size: 0.85rem;
+    max-width: 100%;
+  }
+
+  th, td {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 400px) {
+  table {
+    font-size: 0.75rem;
+  }
+
+  input, select, button {
+    padding: 8px;
+  }
+
+  header h1 {
+    font-size: 1.3rem;
+  }
+}

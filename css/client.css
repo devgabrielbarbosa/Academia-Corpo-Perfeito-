@@ -1,0 +1,631 @@
+/* ================================
+   RESET E BASE
+================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f8f8f8;
+}
+
+/* ================================
+   CABEÇALHO (HEADER)
+================================= */
+header {
+  position: sticky;
+  top: 0;
+  background-color: #121212;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+img {
+  height: 100px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  width: 1000px;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+
+nav {
+  display: flex;
+  gap: 28px;
+}
+
+nav a {
+  color: #f0f0f0;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: color 0.3s ease;
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+}
+
+nav a:hover,
+nav a:focus {
+  color: #ff3b3f;
+  border-bottom-color: #ff3b3f;
+  outline: none;
+}
+
+/* ================================
+   BOTÃO HAMBÚRGUER (MOBILE)
+================================= */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 22px;
+  cursor: pointer;
+  user-select: none;
+  z-index: 1100;
+}
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Animação X */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -10px);
+}
+
+/* ================================
+   HERO SECTION
+================================= */
+.hero {
+  background: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b') no-repeat center;
+  background-size: cover;
+  color: #000;
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+.hero h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  background: #c9c9c9;
+  opacity: 0.8;
+  color: #000;
+  border-radius: 3px;
+  width: 700px;
+  margin: 0 auto;
+}
+
+.hero p {
+  background: #c9c9c9;
+  opacity: 0.8;
+  color: #000;
+  border-radius: 3px;
+  width: 700px;
+  margin: 20px auto;
+}
+
+/* ================================
+   FORMULÁRIO DE MATRÍCULA
+================================= */
+.container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0px auto 0 auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 10;
+}
+
+.container h3 {
+  margin-bottom: 1rem;
+}
+
+form label {
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  display: block;
+  color: #333;
+}
+
+form input,
+form select,
+form button {
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+form button {
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover:not(:disabled) {
+  background-color: #333;
+}
+
+form button:disabled {
+  background-color: #888;
+  cursor: not-allowed;
+}
+
+/* ================================
+   SEÇÃO DE SERVIÇOS
+================================= */
+.servicos {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 0 24px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.servicos h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+  color: #111;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.lista-servicos {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 32px;
+  padding: 0;
+}
+
+.lista-servicos li {
+  background-color: #fafafa;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 24px 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #222;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.lista-servicos li:hover {
+  border-color: #ff3b3f;
+  color: #ff3b3f;
+  cursor: default;
+}
+
+.lista-servicos li span {
+  font-size: 2rem;
+  color: #ff3b3f;
+  transition: color 0.3s;
+}
+.btn-matricula {
+  background-color: #FFD400;
+  border: 2px solid ;
+  color: #ffffff;
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.btn-matricula:hover {
+  background-color: #FFD400;
+  color: #000;
+  transform: scale(1.05);
+}
+
+/* ================================
+   PLANOS-OFERECIDOS
+================================= */
+.secao-planos {
+  padding: 40px 20px;
+  background: #f9f9f9;
+  text-align: center;
+}
+
+.secao-planos h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.cards-planos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.card-plano {
+  background: #fff;
+  border-radius: 15px;
+  padding: 25px;
+  width: 300px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.card-plano:hover {
+  transform: scale(1.03);
+}
+
+.card-plano h3 {
+  font-size: 1.4rem;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.card-plano .preco {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 15px;
+}
+
+.card-plano ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+.card-plano ul li {
+  margin: 8px 0;
+  color: #444;
+}
+
+.btn-contratar {
+  background: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.btn-contratar:hover {
+  background: #0056b3;
+}
+
+.destaque {
+  border: 2px solid #007bff;
+}
+
+/* ================================
+   RODAPÉ (FOOTER)
+================================= */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  background: #000;
+  color: #fff;
+}
+
+/* Botão flutuante */
+#btn-toggle-chat {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ffd400;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  font-size: 28px;
+  color: #000;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+/* Chat container */
+#chatbot {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 320px;
+  max-height: 400px;
+  background: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  padding: 12px;
+  display: none;
+  flex-direction: column;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+  z-index: 999;
+}
+
+/* Messages area */
+#chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 200px;
+}
+
+/* User message bubble */
+.chat-msg.user {
+  align-self: flex-end;
+  background: #ffd400;
+  color: #000;
+  padding: 8px 14px;
+  border-radius: 20px 20px 0 20px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+/* Bot message bubble */
+.chat-msg.bot {
+  align-self: flex-start;
+  background: #333;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 20px 20px 20px 0;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+/* Input area */
+#chatbot > div:last-child {
+  display: flex;
+  gap: 8px;
+}
+
+#chat-input {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #333;
+  background: #121212;
+  color: #fff;
+  outline: none;
+}
+
+#chat-send {
+  background: #ffd400;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+  transition: background-color 0.3s;
+}
+.mapa-localizacao {
+  text-align: center;
+  padding: 10px;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.mapa-localizacao h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #FFD400; /* amarelo estilo Smart Fit */
+  margin: 40px;
+}
+
+.mapa-container {
+  margin-top: 20px;
+  max-width: 1000px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.footer-smartfit {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  padding: 3rem 1rem 1rem;
+  border-top: 5px solid #FFD400;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.footer-column {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-logo {
+  width: 80px;
+  margin-bottom: 0.5rem;
+}
+
+.footer-nome {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.footer-slogan {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-top: 0.5rem;
+}
+
+.footer-column h4 {
+  font-size: 1rem;
+  color: #FFD400;
+  margin-bottom: 0.8rem;
+}
+
+.footer-column p,
+.footer-column a {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-bottom: 0.4rem;
+  text-decoration: none;
+}
+
+.footer-column i {
+  margin-right: 8px;
+  color: #FFD400;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.4rem;
+}
+
+.footer-links a:hover {
+  color: #FFD400;
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 2rem;
+  border-top: 1px solid #222;
+  padding-top: 1rem;
+}
+
+
+
+
+/* ================================
+   RESPONSIVO (TABLET E MOBILE)
+================================= */
+@media (max-width: 768px) {
+  nav {
+    position: absolute;
+    top: 90px;
+    right: 0;
+    background: #000;
+    flex-direction: column;
+    padding: 10px 20px;
+    border-radius: 0 0 0 8px;
+    display: none;
+    z-index: 100;
+    width: 100%;
+  }
+
+  nav.show {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .hero h2,
+  .hero p {
+    max-width: 100%;
+    opacity: 0.7;
+    padding: 5px;
+  }
+    .footer-container {
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 1000px;
+    margin: auto;
+    text-align: left;
+  }
+
+  .footer-logo,
+  .footer-info {
+    flex: 1;
+  }
+
+  .footer-info p {
+    font-size: 1rem;
+  }
+    .footer-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-column {
+    margin-bottom: 2rem;
+  }
+  .mapa-localizacao {
+  text-align: center;
+  padding: 10px;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.mapa-localizacao h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #FFD400; /* amarelo estilo Smart Fit */
+}
+
+.mapa-container {
+  margin-top: 20px;
+  width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+}
+
+@media (max-width: 487px) {
+  .hero h2,
+  .hero p {
+    font-size: 1.2rem;
+    padding: 8px;
+  }
+}

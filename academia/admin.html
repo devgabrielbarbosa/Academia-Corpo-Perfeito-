@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin - Academia Corpo Perfeito</title>
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Academia Corpo Perfeito - Admin</h1>
+  </header>
+
+  <!-- LOGIN -->
+  <section id="loginContainer" class="container">
+    <h2>Login do Administrador</h2>
+    <input type="text" id="usuario" placeholder="Usuário" />
+    <input type="password" id="senha" placeholder="Senha" />
+    <button onclick="fazerLogin()">Entrar</button>
+  </section>
+
+  <!-- SISTEMA (oculto até login) -->
+  <section id="sistemaContainer" class="container" style="display:none;">
+
+    <!-- Navegação -->
+    <nav class="tabs">
+      <button onclick="mostrarSecao('agendamentos')">Agendamentos</button>
+      <button onclick="mostrarSecao('equipamentos')">Equipamentos</button>
+      <button onclick="mostrarSecao('alunos')">Alunos</button>
+    </nav>
+
+    <!-- AGENDAMENTOS -->
+    <div id="agendamentos" class="secao-ativa">
+      <h2>Gerenciar Agendamentos</h2>
+      <form onsubmit="event.preventDefault(); agendarAula();">
+        <input type="text" id="alunoAgendamento" placeholder="Nome do Aluno" required />
+        <input type="date" id="dataAgendamento" required />
+        <button type="submit">Agendar</button>
+      </form>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Aluno</th>
+              <th>Data</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="listaAgendamentos"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EQUIPAMENTOS -->
+    <div id="equipamentos" style="display:none;">
+      <h2>Gerenciar Equipamentos</h2>
+      <form onsubmit="event.preventDefault(); cadastrarEquipamento();">
+        <input type="text" id="nomeEquipamento" placeholder="Nome do Equipamento" required />
+        <select id="statusEquipamento">
+          <option value="Operacional">Operacional</option>
+          <option value="Em Manutenção">Em Manutenção</option>
+          <option value="Quebrado">Quebrado</option>
+        </select>
+        <button type="submit">Cadastrar</button>
+      </form>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Equipamento</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="listaEquipamentos"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ALUNOS -->
+    <div id="alunos" style="display:none;">
+      <h2>Gerenciar Alunos</h2>
+      <form id="formCadastro">
+        <input type="text" id="nomeAluno" placeholder="Nome do aluno" required>
+        <input type="email" id="emailAluno" placeholder="Email" required>
+        <input type="tel" id="telefoneAluno" placeholder="Telefone" required>
+        <select id="planoAluno" required>
+          <option value="">Carregando planos...</option>
+        </select>
+        <button type="submit">Cadastrar Aluno</button>
+      </form>
+
+      <h2>Alunos Matriculados</h2>
+      <div class="table-responsive">
+        <table id="tabela-alunos">
+          <thead>
+            <tr>
+              <th>Aluno</th>
+              <th>Plano</th>
+              <th>Email</th>
+              <th>Telefone</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="lista-alunos">
+            <!-- Os alunos serão adicionados aqui dinamicamente -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </section>
+  <script src="../js/admin.js" type="module"></script>
+   <script type="module" src="../js/firebase-config.js"></script>
+</body>
+</html>

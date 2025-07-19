@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Academia Corpo Perfeito</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+
+  <link rel="stylesheet" href="../css/client.css" />
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <div class="nav-bar">
+      <a href="#"><img src="../imgs/logo-tipo.png" alt="Logo Academia Corpo Perfeito" /></a>
+      <nav class="links">
+        <a href="#matricula">Matrícula</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#contato">Contato</a>
+      </nav>
+      <div class="hamburger" aria-label="Menu" role="button" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero / Banner -->
+    <section class="hero">
+    </section>
+
+    
+    <!-- Formulário de matrícula -->
+    <section class="container" id="matricula">
+      <div>
+      <h2>Corpo saudável, mente forte e rotina leve</h2>
+     <p>
+  Aqui é o seu lugar para treinar com qualidade, pagar menos e conquistar resultados de verdade.
+  Estrutura moderna, ambiente climatizado, professores especializados e planos que cabem no seu bolso💛.
+  <br>
+  Treine do seu jeito. No seu tempo. No seu ritmo. <a href="#form-matricula" class="btn-matricula">Quero me matricular</a>
+       </p>
+       
+      </div>
+      <div>
+  <section class="mapa-localizacao">
+  <h2>📍 Nossa localização</h2>
+  <p>Av Cônego João Lima Rua da Saúde, 123 - Centro Araguaína - TO</p>
+  <div class="mapa-container">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3946.1234567890123!2d-48.2000000!3d-7.2160000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x927xxxxxxx%3A0xyyyyyyyyyyyyyyyy!2sRua%20C%C3%B4nego%20Jo%C3%A3o%20Lima%2C%20Aragua%C3%ADna%20-%20TO!5e0!3m2!1spt-BR!2sbr!4v1690xxxxxxxx"
+      width="100%"
+      height="350"
+      style="border:0; border-radius:12px;"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+
+  </div>
+  <h2>Venha nós fazer uma visita!</h2>
+</section>
+
+
+      </div>
+      <form id="form-matricula">
+        <label for="nome">Nome completo:</label>
+        <input type="text" id="nome" placeholder="Nome completo" required />
+
+        <label for="telefone">Telefone/WhatsApp:</label>
+        <input type="text" id="telefone" placeholder="Telefone/WhatsApp" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Email" required />
+            <label for="planos">Escolha seu plano:</label>
+           <select id="planos" name="plano" required>
+  <option value="" disabled selected>Selecione</option>
+  <option value="plano-basico">Plano Básico - R$ 69.90</option>
+  <option value="plano-plus">Plano Plus - R$ 99.90</option>
+  <option value="plano-premium">Plano Premium - R$ 129.90</option>
+</select>
+
+
+<div id="servicos-plano"></div>
+        <div id="servicos-plano" style="margin-bottom: 1rem; font-weight: bold; font-style: italic; color: #555;">
+          Escolha um plano para ver os serviços incluídos.
+        </div>
+
+        <label for="pagamento">Forma de pagamento:</label>
+        <select id="pagamento" name="pagamento" required>
+          <option value="" disabled selected>Selecione</option>
+          <option value="pix">Pix</option>
+          <option value="cartao">Cartão de Crédito</option>
+          <option value="boleto">Boleto</option>
+        </select>
+
+        <button type="submit">Matricular</button>
+      </form>
+    </section>
+
+    <!-- Planos e Serviços -->
+    <section id="planos" class="secao-planos">
+      <h2>Planos e Serviços</h2>
+      <div class="cards-planos">
+        <div class="card-plano" id="plano-basico">
+          <h3>Plano Básico</h3>
+          <p class="preco">R$ 69,90/mês</p>
+          <ul>
+            <li>Musculação</li>
+            <li>Spinning</li>
+            <li>Aulas Funcionais</li>
+          </ul>
+          <button class="btn-contratar" onclick="contratarPlano('plano-basico')">Contratar</button>
+        </div>
+
+        <div class="card-plano destaque" id="plano-plus">
+          <h3>Plano Plus</h3>
+          <p class="preco">R$ 99,90/mês</p>
+          <ul>
+            <li>Todos do Básico</li>
+            <li>Cross Training</li>
+            <li>Zumba</li>
+            <li>Acompanhamento Nutricional</li>
+          </ul>
+          <button class="btn-contratar" onclick="contratarPlano('plano-plus')">Contratar</button>
+        </div>
+
+        <div class="card-plano" id="plano-premium">
+          <h3>Plano Premium</h3>
+          <p class="preco">R$ 129,90/mês</p>
+          <ul>
+            <li>Todos do Plus</li>
+            <li>Personal Trainer</li>
+            <li>Treino Feminino</li>
+            <li>Plano Dieta Exclusivo</li>
+          </ul>
+          <button class="btn-contratar" onclick="contratarPlano('plano-premium')">Contratar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Serviços oferecidos -->
+    <section class="servicos" id="servicos" aria-labelledby="titulo-servicos">
+      <h2 id="titulo-servicos">Serviços Oferecidos</h2>
+      <ul class="lista-servicos">
+        <li><span>🏋️‍♂️</span> Musculação</li>
+        <li><span>🤸‍♂️</span> Cross Training</li>
+        <li><span>🚴‍♀️</span> Spinning</li>
+        <li><span>💃</span> Zumba</li>
+        <li><span>🏃‍♀️</span> Aulas Funcionais</li>
+        <li><span>🥗</span> Acompanhamento Nutricional</li>
+        <li><span>👨‍🏫</span> Personal Trainer</li>
+        <li><span>👩‍🦰</span> Treino Feminino</li>
+      </ul>
+    </section>
+    <section>
+        <!-- Botão flutuante para abrir/fechar o chat -->
+<button id="btn-toggle-chat">💬</button>
+
+<!-- Container do chatbot -->
+<div id="chatbot">
+  <div id="chat-messages"></div>
+  <div>
+    <input id="chat-input" type="text" placeholder="Digite sua pergunta..." />
+    <button id="chat-send">Enviar</button>
+  </div>
+</div>
+    </section>
+  </main>
+
+  <!-- Rodapé -->
+ <footer class="footer-smartfit">
+  <div class="footer-inner">
+    <div class="footer-column">
+      <img src="../imgs/logo-tipo.png" alt="Logo Academia Corpo Perfeito" class="footer-logo" />
+      <p class="footer-nome">Academia Corpo Perfeito</p>
+      <p class="footer-slogan">Transformando vidas com saúde e performance.</p>
+    </div>
+
+    <div class="footer-column">
+      <h4>Contato</h4>
+      <p><i class="fas fa-map-marker-alt"></i>Av Cônego João Lima Rua da Saúde, 123 - Centro Araguaína - TO</p>
+      <p><i class="fas fa-phone-alt"></i> (63) 99999-9999</p>
+      <p><i class="fab fa-instagram"></i> @academiacorpoperfeito</p>
+    </div>
+
+    <div class="footer-column">
+      <h4>Links Rápidos</h4>
+      <ul class="footer-links">
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#planos">Planos</a></li>
+        <li><a href="#equipamentos">Equipamentos</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Academia Corpo Perfeito. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+
+  <!-- Firebase e JS -->
+  <script type="module" src="../js/client.js"></script>
+  <script type="module" src="../js/firebase-config.js"></script>
+  <script type="module" src="../js/chat.js"></script>
+</body>
+</html>
