@@ -100,7 +100,7 @@ if (p.includes("quebrado") || p.includes("quebrados") || p.includes("quebrada"))
 }
 
   // Respostas fixas (sem consultar Firebase)
-  if (p.includes("horário") || p.includes("funciona") || p.includes("horas") || p.includes("")) {
+  if (p.includes("horário") || p.includes("horas")) {
     return "A academia funciona de segunda a sexta das 6h às 22h e aos sabados das 8h às 16h.";
   }
 
