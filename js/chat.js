@@ -103,7 +103,15 @@ if (p.includes("quebrado") || p.includes("quebrados") || p.includes("quebrada"))
   if (p.includes("horário") || p.includes("horas")) {
     return "A academia funciona de segunda a sexta das 6h às 22h e aos sabados das 8h às 16h.";
   }
-
+   if (p.includes("tarde")) {
+    return "Olá boa Tarde! Em que posso ajudar ?";
+  }
+ if (p.includes("dia")) {
+    return "Olá boa Dia! Em que posso ajudar ?";
+  }
+   if (p.includes("noite")) {
+    return "Olá boa Noite! Em que posso ajudar ?";
+  }
   if (p.includes("planos") || p.includes("mensalidade") || p.includes("preço")) {
     return "Temos 3 planos: Básico R$ 69,90, e também temos o plano Plus R$ 99,90 e o plano Premium R$ 129,90.";
   }
