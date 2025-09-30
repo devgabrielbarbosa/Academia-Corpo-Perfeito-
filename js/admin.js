@@ -113,17 +113,6 @@ function preencherSelectPlanos() {
     select.appendChild(opt);
   });
 }
-function preencherSelectPlanos() {
-  const select = document.getElementById("planoAluno");
-  if (!select) return;
-  select.innerHTML = '<option value="">Selecione um plano</option>';
-  planosCache.forEach((plano, id) => {
-    const opt = document.createElement("option");
-    opt.value = id;
-    opt.textContent = plano.nome;
-    select.appendChild(opt);
-  });
-}
 
 // --- MATRÍCULAS ---
 function iniciarMatriculas() {
