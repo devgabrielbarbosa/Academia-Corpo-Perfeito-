@@ -235,29 +235,3 @@ window.removerMatricula = removerMatricula;
 
 
 
-// --- PLANOS ---
-async function carregarPlanos() {
-  try {
-    const snapshot = await getDocs(planosRef);
-    planosCache.clear();
-    snapshot.forEach(doc => planosCache.set(doc.id, doc.data()));
-
-    preencherSelectPlanos(); // <-- aqui chama a função para preencher o select
-  } catch (err) {
-    console.error("Erro ao carregar planos:", err);
-  }
-}
-
-// --- Preenche o select de planos ---
-function preencherSelectPlanos() {
-  const select = document.getElementById("planoAluno"); // ou o ID do seu select
-  if (!select) return;
-
-  select.innerHTML = '<option value="">Selecione um plano</option>';
-  planosCache.forEach((plano, id) => {
-    const opt = document.createElement("option");
-    opt.value = id;        // o value é o ID do plano
-    opt.textContent = plano.nome; // mostra o nome do plano
-    select.appendChild(opt);
-  });
-}
