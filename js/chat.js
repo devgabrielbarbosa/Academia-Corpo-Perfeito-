@@ -156,107 +156,6 @@ if (p.includes("quebrado") || p.includes("quebrados") || p.includes("quebrada"))
     : "Nenhum equipamento está funcionando no momento.";
 }
 
-  // Respostas fixas (sem consultar Firebase)
-  if (p.includes("horário") || p.includes("funciona") || p.includes("horas") || p.includes("")) {
-    return "A academia funciona de segunda a sexta das 6h às 22h e aos sabados das 8h às 16h.";
-  }
-
-  if (p.includes("planos") || p.includes("mensalidade") || p.includes("preço")) {
-    return "Temos 3 planos: Básico R$ 69,90, e também temos o plano Plus R$ 99,90 e o plano Premium R$ 129,90.";
-  }
-
-  if (p.includes("musculação")) {
-    return "Sim! Temos musculação com equipamentos modernos e acompanhamento profissional.";
-  }
-
-  if (p.includes("zumba")) {
-    return "Temos aulas de zumba nas segundas, quartas e sextas às 19h.";
-  }
-
-  if (p.includes("pilates")) {
-    return "Temos aulas de pilates todas as manhãs às 8h.";
-  }
-
-  if (p.includes("nutricionista")) {
-    return "Temos parceria com nutricionistas. Consulte a recepção para agendar.";
-  }
-
-  if (p.includes("avaliação física")) {
-    return "Sim! Fazemos avaliação física gratuita todo mês para alunos ativos.";
-  }
-
-  if (p.includes("wifi")) {
-    return "Sim! Temos Wi-Fi gratuito. Solicite a senha na recepção.";
-  }
-
-  if (p.includes("estacionamento")) {
-    return "Sim! Temos estacionamento gratuito para alunos.";
-  }
-
-  if (p.includes("personal")) {
-    return "Temos personal trainers disponíveis. Consulte horários e valores.";
-  }
-
-  if (p.includes("você é real") || p.includes("você é humano")) {
-    return "Sou um assistente virtual da Academia Corpo Perfeito, feito com carinho. 💪🤖";
-  }
-
-  if (p.includes("tem vestiário")) {
-    return "Sim! Temos vestiários masculinos e femininos com chuveiros.";
-  }
-
-  if (p.includes("forma de pagamento")) {
-    return "Aceitamos cartão, pix, boleto e pagamento recorrente via app.";
-  }
-
-  if (p.includes("como chegar") || p.includes("localização")) {
-    return "Estamos localizados na Ponta do Asfalto - Wanderlândia-TO.";
-  }
-
-  if (p.includes("tem banho")) {
-    return "Sim, temos chuveiros disponíveis nos vestiários.";
-  }
-
-  if (p.includes("tem ar-condicionado")) {
-    return "Sim! O ambiente da academia é climatizado para seu conforto.";
-  }
-
-  if (p.includes("tem água")) {
-    return "Temos bebedouros de água gelada disponíveis.";
-  }
-
-  if (p.includes("tempo de treino")) {
-    return "O tempo de treino é livre durante o expediente da academia.";
-  }
-
-  if (p.includes("aulas disponíveis")) {
-    return "Oferecemos aulas de zumba, pilates, funcional, HIIT e spinning.";
-  }
-
-  if (p.includes("tem spinning")) {
-    return "Sim! As aulas de spinning são terças e quintas às 18h.";
-  }
-
-  if (p.includes("tem hiit")) {
-    return "Sim! HIIT de alta intensidade às segundas e quartas às 20h.";
-  }
-
-  if (p.includes("tem crossfit")) {
-    return "No momento, não oferecemos crossfit.";
-  }
-
-  if (p.includes("tem dança")) {
-    return "Sim! Aulas de dança com foco em queima calórica e diversão!";
-  }
-
-  // Respostas fixas
-  const resposta = procurarResposta(pergunta);
-  if (resposta) return resposta;
-
-  // Padrão
-  return "Desculpe, não entendi sua pergunta. Pergunte sobre horários, planos, aulas ou equipamentos.";
-}
-
 // ---------------- ENVIO ----------------
 async function enviarMensagem() {
   const texto = inputChat.value.trim();
@@ -287,3 +186,4 @@ inputChat.addEventListener("keydown", (e) => {
     enviarMensagem();
   }
 });
+}
