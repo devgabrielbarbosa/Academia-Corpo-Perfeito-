@@ -78,38 +78,51 @@
       </div>
     </div>
 
-    <!-- ALUNOS -->
-    <div id="alunos" style="display:none;">
-      <h2>Gerenciar Alunos</h2>
-      <form id="formCadastro">
-        <input type="text" id="nomeAluno" placeholder="Nome do aluno" required>
-        <input type="email" id="emailAluno" placeholder="Email" required>
-        <input type="tel" id="telefoneAluno" placeholder="Telefone" required>
-        <select id="planoAluno" required>
-          <option value="">Carregando planos...</option>
-        </select>
-        <button type="submit">Cadastrar Aluno</button>
-      </form>
 
-      <h2>Alunos Matriculados</h2>
-      <div class="table-responsive">
-        <table id="tabela-alunos">
-          <thead>
-            <tr>
-              <th>Aluno</th>
-              <th>Plano</th>
-              <th>Email</th>
-              <th>Telefone</th> 
-              <th>Cpf</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="lista-alunos">
-            <!-- Os alunos serão adicionados aqui dinamicamente -->
-          </tbody>
-        </table>
-      </div>
-    </div>
+<!-- ALUNOS -->
+<div id="alunos" style="display:none;">
+  <h2>Gerenciar Alunos</h2>
+  <!-- Formulário de cadastro de alunos -->
+  <form id="formCadastro" onsubmit="cadastrarAluno(event)">
+    <input type="text" id="nomeAluno" placeholder="Nome do aluno" required>
+    <input type="email" id="emailAluno" placeholder="Email" required>
+    <input type="tel" id="telefoneAluno" placeholder="Telefone" required>
+    <input type="text" id="cpfAluno" placeholder="CPF" required>
+    
+    <select id="planoAluno" required>
+      <option value="">Carregando planos...</option>
+    </select>
+
+    <select id="pagamentoAluno" required>
+      <option value="">Escolha a forma de pagamento</option>
+      <option value="cartao">Cartão de Crédito</option>
+      <option value="pix">Pix</option>
+      <option value="boleto">Boleto</option>
+    </select>
+
+    <button type="submit">Cadastrar Aluno</button>
+  </form>
+
+  <h2>Alunos Matriculados</h2>
+  <div class="table-responsive">
+    <table id="tabela-alunos">
+      <thead>
+        <tr>
+          <th>Aluno</th>
+          <th>Plano</th>
+          <th>Email</th>
+          <th>Telefone</th>
+          <th>CPF</th>
+          <th>Forma de Pagamento</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="lista-alunos">
+        <!-- Os alunos serão adicionados aqui dinamicamente pelo admin.js -->
+      </tbody>
+    </table>
+  </div>
+</div>
 
   </section>
   <script src="../js/admin.js" type="module"></script>

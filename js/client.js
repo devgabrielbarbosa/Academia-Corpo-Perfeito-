@@ -1,13 +1,9 @@
 // js/client.js
-
 import { db } from './firebase-config.js';
 import { 
   collection, 
-  getDocs, 
-  query, 
-  where,
-  addDoc,
-  serverTimestamp
+  addDoc, 
+  serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const hamburger = document.querySelector('.hamburger');
@@ -29,7 +25,7 @@ hamburger.addEventListener('keydown', e => {
   }
 });
 
-// Atualiza serviços do plano (pode usar objeto static ou ler do texto)
+// Atualiza serviços do plano
 const planosInfo = {
   basico:   ["Musculação","Spinning","Aulas Funcionais"],
   plus:     ["Todos do Básico","Cross Training","Zumba","Acompanhamento Nutricional"],
@@ -53,11 +49,12 @@ window.contratarPlano = function(id) {
 
 // Envio do formulário
 form.addEventListener('submit', async e => {
-  e.preventDefault();
+  e.preventDefault(); // ESSENCIAL: impede reload
+
   const nome  = document.getElementById('nome').value.trim();
   const tel   = document.getElementById('telefone').value.trim();
   const email = document.getElementById('email').value.trim();
-  const cpf = document.getElementById('cpf').value;
+  const cpf   = document.getElementById('cpf').value.trim();
   const pagamento = document.getElementById('pagamento').value;
   const idPlano   = selectPlanos.value;
   const txtPlano  = selectPlanos.options[selectPlanos.selectedIndex].text;
@@ -77,9 +74,14 @@ form.addEventListener('submit', async e => {
       planoNome: txtPlano,
       dataCadastro: serverTimestamp()
     });
+
     alert("Matrícula realizada com sucesso!");
     form.reset();
     servicosPlanoDiv.textContent = "Escolha um plano para ver os serviços incluídos.";
+
+    // NÃO coloque window.location.hash ou window.location.href
+    // Isso impede que vá para #equipamentos
+
   } catch(err) {
     console.error(err);
     alert("Erro ao realizar matrícula.");

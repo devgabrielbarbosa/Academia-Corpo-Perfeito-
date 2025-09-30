@@ -452,7 +452,8 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  height: 200px;
+  height: 300px;
+  scrollbar-width: thin ;
 }
 
 /* User message bubble */
@@ -701,6 +702,19 @@ footer {
   .mapa-localizacao strong{
     font-size: 25px;
   }
+  /* Messages area */
+#chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 500px;
+  scrollbar-width: thin ;
+}
+
 
 }
 
@@ -722,4 +736,17 @@ footer {
   .mapa-localizacao strong{
     font-size: 25px;
   }
+  /* Messages area */
+#chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 500px;
+  scrollbar-width: thin ;
+}
+
 }
