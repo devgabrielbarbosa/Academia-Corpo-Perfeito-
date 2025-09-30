@@ -84,9 +84,6 @@ async function editarEquipamento(id) {
   }
 }
 
-
-
-
 // --- PLANOS ---
 async function carregarPlanos() {
   try {
@@ -215,12 +212,6 @@ window.editarEquipamento = editarEquipamento;
 window.removerEquipamento = removerEquipamento;
 window.cadastrarAluno = cadastrarAluno;
 window.removerMatricula = removerMatricula;
-
-
-
-
-
-
 
 
 
