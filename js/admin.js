@@ -24,9 +24,9 @@ const planosCache = new Map();
 
 // --- EQUIPAMENTOS ---
 function iniciarEquipamentos() {
+  if (!listaEquipamentos) return;
   const q = query(equipamentosRef);
   onSnapshot(q, snapshot => {
-    if (!listaEquipamentos) return;
     listaEquipamentos.innerHTML = "";
     snapshot.forEach(docSnap => {
       const dados = docSnap.data();
@@ -84,6 +84,9 @@ async function editarEquipamento(id) {
   }
 }
 
+
+
+
 // --- PLANOS ---
 async function carregarPlanos() {
   try {
@@ -110,12 +113,23 @@ function preencherSelectPlanos() {
     select.appendChild(opt);
   });
 }
+function preencherSelectPlanos() {
+  const select = document.getElementById("planoAluno");
+  if (!select) return;
+  select.innerHTML = '<option value="">Selecione um plano</option>';
+  planosCache.forEach((plano, id) => {
+    const opt = document.createElement("option");
+    opt.value = id;
+    opt.textContent = plano.nome;
+    select.appendChild(opt);
+  });
+}
 
 // --- MATRÍCULAS ---
 function iniciarMatriculas() {
+  if (!listaMatriculas) return;
   const qMatriculas = query(matriculasRef);
   onSnapshot(qMatriculas, snapshot => {
-    if (!listaMatriculas) return;
     listaMatriculas.innerHTML = "";
     snapshot.forEach(docSnap => {
       const dados = docSnap.data();
@@ -147,22 +161,16 @@ async function removerMatricula(id) {
 
 // --- CADASTRO DE ALUNOS ---
 async function cadastrarAluno(event) {
-  event.preventDefault(); // importante!
-  
+  event.preventDefault();
   const n = document.getElementById("nomeAluno").value.trim();
   const p = document.getElementById("planoAluno").value;
   const e = document.getElementById("emailAluno").value.trim();
   const t = document.getElementById("telefoneAluno").value.trim();
   const c = document.getElementById("cpfAluno").value.trim();
   const f = document.getElementById("pagamentoAluno").value.trim();
-
-  if (!n || !p || !e || !t || !c || !f) {
-    return alert("Preencha todos os campos!");
-  }
-
+  if (!n || !p || !e || !t || !c || !f) return alert("Preencha todos os campos!");
   try {
     const planoNome = planosCache.get(p)?.nome || "Plano não encontrado";
-
     await addDoc(matriculasRef, {
       nome: n,
       planoId: p,
@@ -173,10 +181,7 @@ async function cadastrarAluno(event) {
       formaPagamento: f,
       dataCadastro: serverTimestamp()
     });
-
-    ["nomeAluno", "planoAluno", "emailAluno", "telefoneAluno", "cpfAluno", "pagamentoAluno"]
-      .forEach(id => document.getElementById(id).value = "");
-    
+    ["nomeAluno", "planoAluno", "emailAluno", "telefoneAluno", "cpfAluno", "pagamentoAluno"].forEach(id => document.getElementById(id).value = "");
     alert("Aluno cadastrado com sucesso!");
   } catch (err) {
     console.error(err);
@@ -227,3 +232,32 @@ window.removerMatricula = removerMatricula;
 
 
 
+
+
+
+// --- PLANOS ---
+async function carregarPlanos() {
+  try {
+    const snapshot = await getDocs(planosRef);
+    planosCache.clear();
+    snapshot.forEach(doc => planosCache.set(doc.id, doc.data()));
+
+    preencherSelectPlanos(); // <-- aqui chama a função para preencher o select
+  } catch (err) {
+    console.error("Erro ao carregar planos:", err);
+  }
+}
+
+// --- Preenche o select de planos ---
+function preencherSelectPlanos() {
+  const select = document.getElementById("planoAluno"); // ou o ID do seu select
+  if (!select) return;
+
+  select.innerHTML = '<option value="">Selecione um plano</option>';
+  planosCache.forEach((plano, id) => {
+    const opt = document.createElement("option");
+    opt.value = id;        // o value é o ID do plano
+    opt.textContent = plano.nome; // mostra o nome do plano
+    select.appendChild(opt);
+  });
+}

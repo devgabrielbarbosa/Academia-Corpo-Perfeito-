@@ -49,13 +49,7 @@ const respostas = [
   { chaves: ["zumba"], resposta: "Zumba nas segundas, quartas e sextas às 19h." },
   { chaves: ["pilates"], resposta: "Pilates todas as manhãs às 8h." },
   { chaves: ["nutricionista"], resposta: "Temos parceria com nutricionistas. Consulte a recepção." },
-  { chaves: ["avaliação física", "avaliar"], resposta: "Fazemos avaliação física gratuita todo mês para alunos ativos." },
   { chaves: ["wifi", "internet"], resposta: "Sim! Temos Wi-Fi gratuito. Solicite a senha na recepção." },
-  { chaves: ["estacionamento", "carro"], resposta: "Estacionamento gratuito para alunos." },
-  { chaves: ["personal", "treinador"], resposta: "Temos personal trainers. Consulte horários e valores." },
-  { chaves: ["vestiário", "banho"], resposta: "Sim! Temos vestiários com chuveiros." },
-  { chaves: ["pagamento", "pix", "boleto", "cartão"], resposta: "Aceitamos cartão, pix, boleto e pagamento recorrente via app." },
-  { chaves: ["localização", "endereço", "onde fica"], resposta: "Estamos localizados na Ponta do Asfalto - Wanderlândia-TO." },
   { chaves: ["obrigado", "valeu", "agradecido"], resposta: ["Por nada! Estamos à disposição. 😄", "Disponha, sempre por aqui!", "Imagina, estamos juntos! 💪"] },
   { chaves: ["seu nome", "quem é você"], resposta: "Me chamo CorpoBot, seu assistente da Academia Corpo Perfeito! 💪" }
 ];
@@ -84,17 +78,23 @@ async function processarPergunta(pergunta) {
   // 🔹 Consultar Firestore dinamicamente
   if (p.includes("manutenção")) {
     const emManutencao = await buscarEquipamentosPorStatus("em manutenção");
-    return emManutencao.length ? `Equipamentos em manutenção:\n${emManutencao.map((eq, i) => `${i + 1}. ${eq}`).join("\n")}` : "Nenhum equipamento em manutenção.";
+    return emManutencao.length 
+      ? `Equipamentos em manutenção:\n${emManutencao.map((eq, i) => `${i + 1}. ${eq}`).join("\n")}` 
+      : "Nenhum equipamento em manutenção.";
   }
 
   if (p.includes("quebrado") || p.includes("quebrados") || p.includes("quebrada")) {
     const quebrados = await buscarEquipamentosPorStatus("quebrado");
-    return quebrados.length ? `Os equipamentos quebrados são:\n${quebrados.map((eq, i) => `${i + 1}. ${eq}`).join("\n")}` : "Nenhum equipamento está quebrado.";
+    return quebrados.length 
+      ? `Os equipamentos quebrados são:\n${quebrados.map((eq, i) => `${i + 1}. ${eq}`).join("\n")}` 
+      : "Nenhum equipamento está quebrado.";
   }
 
   if (p.includes("funcionando") || p.includes("operacional") || p.includes("ativos") || p.includes("disponíveis")) {
     const operacionais = await buscarEquipamentosPorStatus("operacional");
-    return operacionais.length ? `Equipamentos funcionando:\n${operacionais.map((eq, i) => `${i + 1}. ${eq}`).join("\n")}` : "Nenhum equipamento em operação.";
+    return operacionais.length 
+      ? `Equipamentos funcionando:\n${operacionais.map((eq, i) => `${i + 1}. ${eq}`).join("\n")}` 
+      : "Nenhum equipamento em operação.";
   }
 
   // 🔹 Resposta fixa
