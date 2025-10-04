@@ -1,131 +1,516 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!doctype html>
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin - Academia Corpo Perfeito</title>
-  <link rel="stylesheet" href="../css/admin.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard - Academia (Local)</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root{--accent:#0d6efd}
+    body{background:#f5f7fb;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    .sidebar{height:100vh;background:linear-gradient(180deg,#0b5ed7,#0a58ca);color:#fff}
+    .sidebar a{color:#fff;text-decoration:none}
+    .card-small{min-height:92px}
+    .status-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:8px}
+    .pointer{cursor:pointer}
+    .small-chart{height:90px}
+    .muted-small{font-size:12px;color:#6c757d}
+    .table-actions button{margin-right:6px}
+    @media (max-width:991px){.sidebar{height:auto;padding-bottom:20px}}
+    body {
+font-family: Arial, sans-serif;
+background: #f8f9fa;
+margin: 0;
+padding: 0;
+}
+header {
+background: #0d6efd;
+color: white;
+padding: 1rem;
+text-align: center;
+}
+.sidebar button {
+width: 100%;
+margin-bottom: 0.5rem;
+}
+.content {
+padding: 1rem;
+}
+.card-counter {
+border-radius: 10px;
+padding: 20px;
+margin: 10px 0;
+background: #fff;
+box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+text-align: center;
+}
+.chart-container {
+background: #fff;
+padding: 1rem;
+border-radius: 10px;
+box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+margin-top: 1rem;
+}
+@media (max-width: 768px) {
+.sidebar {
+min-height: auto;
+border-right: none;
+border-bottom: 1px solid #ddd;
+}
+}
+  </style>
 </head>
 <body>
-
-  <header>
-    <h1>Academia Corpo Perfeito - Admin</h1>
-  </header>
-
-  <!-- LOGIN -->
-  <section id="loginContainer" class="container">
-    <h2>Login do Administrador</h2>
-    <input type="text" id="usuario" placeholder="Usuário" />
-    <input type="password" id="senha" placeholder="Senha" />
-    <button onclick="fazerLogin()">Entrar</button>
-  </section>
-
-  <!-- SISTEMA (oculto até login) -->
-  <section id="sistemaContainer" class="container" style="display:none;">
-
-    <!-- Navegação -->
-    <nav class="tabs">
-      <button onclick="mostrarSecao('agendamentos')">Agendamentos</button>
-      <button onclick="mostrarSecao('equipamentos')">Equipamentos</button>
-      <button onclick="mostrarSecao('alunos')">Alunos</button>
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-lg-2 sidebar p-3 d-flex flex-column gap-3">
+      <h4 class="mb-0">Academia</h4>
+      <small>Dashboard local • LocalStorage</small>
+      <hr style="border-color:rgba(255,255,255,0.12)"/>
+      <div class="nav flex-column">
+        <a class="nav-link active text-white" href="#" data-target="dashboard">Dashboard</a>
+        <a class="nav-link text-white" href="#" data-target="alunos">Alunos</a>
+        <a class="nav-link text-white" href="#" data-target="agendamentos">Agendamentos</a>
+        <a class="nav-link text-white" href="#" data-target="equipamentos">Equipamentos</a>
+        <a class="nav-link text-white" href="#" data-target="planos">Planos</a>
+      </div>
+      <div class="mt-auto">
+        <button id="btnReset" class="btn btn-sm btn-outline-light w-100">Resetar dados</button>
+      </div>
     </nav>
 
-    <!-- AGENDAMENTOS -->
-    <div id="agendamentos" class="secao-ativa">
-      <h2>Gerenciar Agendamentos</h2>
-      <form onsubmit="event.preventDefault(); agendarAula();">
-        <input type="text" id="alunoAgendamento" placeholder="Nome do Aluno" required />
-        <input type="date" id="dataAgendamento" required />
-        <button type="submit">Agendar</button>
-      </form>
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>Aluno</th>
-              <th>Data</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="listaAgendamentos"></tbody>
-        </table>
+    <main class="col-lg-10 p-4">
+      <!-- Top bar -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 id="pageTitle">Dashboard</h3>
+        <div>
+          <button class="btn btn-primary me-2" id="openAddStudent">Novo aluno</button>
+          <button class="btn btn-outline-secondary" id="openSample">Popular com dados</button>
+        </div>
       </div>
-    </div>
 
-    <!-- EQUIPAMENTOS -->
-    <div id="equipamentos" style="display:none;">
-      <h2>Gerenciar Equipamentos</h2>
-      <form onsubmit="event.preventDefault(); cadastrarEquipamento();">
-        <input type="text" id="nomeEquipamento" placeholder="Nome do Equipamento" required />
-        <select id="statusEquipamento">
-          <option value="Operacional">Operacional</option>
-          <option value="Em Manutenção">Em Manutenção</option>
-          <option value="Quebrado">Quebrado</option>
-        </select>
-        <button type="submit">Cadastrar</button>
-      </form>
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>Equipamento</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="listaEquipamentos"></tbody>
-        </table>
-      </div>
-    </div>
+      <!-- Sections -->
+      <section id="dashboard" class="section-root">
+        <div class="row g-3 mb-3">
+          <div class="col-md-3">
+            <div class="card p-3 card-small">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="muted-small">Alunos ativos</div>
+                  <h2 id="countActive">0</h2>
+                </div>
+                <div class="text-end">
+                  <div class="status-dot" style="background:#198754"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card p-3 card-small">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="muted-small">Alunos inativos</div>
+                  <h2 id="countInactive">0</h2>
+                </div>
+                <div>
+                  <div class="status-dot" style="background:#6c757d"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card p-3 card-small">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="muted-small">Pendentes</div>
+                  <h2 id="countPending">0</h2>
+                </div>
+                <div>
+                  <div class="status-dot" style="background:#ffc107"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card p-3 card-small">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="muted-small">Equipamentos</div>
+                  <h2 id="countEquip">0</h2>
+                </div>
+                <div>
+                  <div class="status-dot" style="background:#dc3545"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <div class="row g-3">
+          <div class="col-lg-8">
+            <div class="card p-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">Cadastros por mês (ano do sistema)</h5>
+                <small class="text-muted">Visão: inscrições</small>
+              </div>
+              <canvas id="chartEnrollments" class="small-chart"></canvas>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card p-3">
+              <h6>Resumo rápido</h6>
+              <div id="quickList" class="mt-2"></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-<!-- ALUNOS -->
-<div id="alunos" style="display:none;">
-  <h2>Gerenciar Alunos</h2>
-  <!-- Formulário de cadastro de alunos -->
-  <form id="formCadastro" onsubmit="cadastrarAluno(event)">
-    <input type="text" id="nomeAluno" placeholder="Nome do aluno" required>
-    <input type="email" id="emailAluno" placeholder="Email" required>
-    <input type="tel" id="telefoneAluno" placeholder="Telefone" required>
-    <input type="text" id="cpfAluno" placeholder="CPF" required>
-    
-    <select id="planoAluno" required>
-      <option value="">Carregando planos...</option>
-    </select>
+      <section id="alunos" class="d-none section-root">
+        <div class="card p-3 mb-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5>Alunos</h5>
+            <div>
+              <button class="btn btn-sm btn-success" id="addStudentBtnTop">Cadastrar aluno</button>
+            </div>
+          </div>
+          <div class="mt-3 table-responsive">
+            <table class="table table-striped table-hover" id="studentsTable">
+              <thead>
+                <tr><th>Nome</th><th>CPF</th><th>Telefone</th><th>E-mail</th><th>Plano</th><th>Status</th><th>Ações</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
-    <select id="pagamentoAluno" required>
-      <option value="">Escolha a forma de pagamento</option>
-      <option value="cartao">Cartão de Crédito</option>
-      <option value="pix">Pix</option>
-      <option value="boleto">Boleto</option>
-    </select>
+      <section id="agendamentos" class="d-none section-root">
+        <div class="card p-3 mb-3">
+          <div class="d-flex justify-content-between">
+            <h5>Agendamentos</h5>
+            <button class="btn btn-sm btn-primary" id="openBooking">Novo agendamento</button>
+          </div>
+          <div class="mt-3">
+            <table class="table" id="bookingsTable">
+              <thead><tr><th>Aluno</th><th>Data</th><th>Aula</th><th>Status</th><th>Ações</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
-    <button type="submit">Cadastrar Aluno</button>
-  </form>
+      <section id="equipamentos" class="d-none section-root">
+        <div class="card p-3 mb-3">
+          <div class="d-flex justify-content-between">
+            <h5>Equipamentos</h5>
+            <button class="btn btn-sm btn-secondary" id="openEquip">Cadastrar equipamento</button>
+          </div>
+          <div class="mt-3">
+            <table class="table" id="equipTable">
+              <thead><tr><th>Nome</th><th>Descrição</th><th>Status</th><th>Ações</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
-  <h2>Alunos Matriculados</h2>
-  <div class="table-responsive">
-    <table id="tabela-alunos">
-      <thead>
-        <tr>
-          <th>Aluno</th>
-          <th>Plano</th>
-          <th>Email</th>
-          <th>Telefone</th>
-          <th>CPF</th>
-          <th>Forma de Pagamento</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody id="lista-alunos">
-        <!-- Os alunos serão adicionados aqui dinamicamente pelo admin.js -->
-      </tbody>
-    </table>
+      <section id="planos" class="d-none section-root">
+        <div class="card p-3 mb-3">
+          <div class="d-flex justify-content-between">
+            <h5>Planos</h5>
+            <button class="btn btn-sm btn-outline-primary" id="openPlan">Novo plano</button>
+          </div>
+          <div class="mt-3">
+            <table class="table" id="plansTable">
+              <thead><tr><th>Nome</th><th>Duração</th><th>Valor</th><th>Ações</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
   </div>
 </div>
 
-  </section>
-  <script src="../js/admin.js" type="module"></script>
-   <script type="module" src="../js/firebase-config.js"></script>
+<!-- Modals (forms) -->
+<div class="modal" tabindex="-1" id="modalStudent">
+  <div class="modal-dialog">
+    <form class="modal-content" id="formStudent">
+      <div class="modal-header"><h5 class="modal-title">Cadastrar/Editar Aluno</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <input type="hidden" id="studentId">
+        <div class="mb-2"><label>Nome</label><input required id="studentName" class="form-control"></div>
+        <div class="mb-2"><label>CPF</label><input id="studentCPF" class="form-control"></div>
+        <div class="mb-2"><label>Telefone</label><input id="studentPhone" class="form-control"></div>
+        <div class="mb-2"><label>E-mail</label><input id="studentEmail" type="email" class="form-control"></div>
+        <div class="mb-2"><label>Plano</label><select id="studentPlan" class="form-select"></select></div>
+        <div class="mb-2"><label>Status</label><select id="studentStatus" class="form-select"><option value="ativo">Ativo</option><option value="inativo">Inativo</option><option value="pendente">Pendente</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Fechar</button><button class="btn btn-primary" type="submit">Salvar</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalEquip">
+  <div class="modal-dialog">
+    <form class="modal-content" id="formEquip">
+      <div class="modal-header"><h5 class="modal-title">Cadastrar/Editar Equipamento</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <input type="hidden" id="equipId">
+        <div class="mb-2"><label>Nome</label><input required id="equipName" class="form-control"></div>
+        <div class="mb-2"><label>Descrição</label><input id="equipDesc" class="form-control"></div>
+        <div class="mb-2"><label>Status</label><select id="equipStatus" class="form-select"><option value="operando">Operando</option><option value="manutencao">Em manutenção</option><option value="quebrado">Quebrado</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Fechar</button><button class="btn btn-primary" type="submit">Salvar</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalBooking">
+  <div class="modal-dialog">
+    <form class="modal-content" id="formBooking">
+      <div class="modal-header"><h5 class="modal-title">Agendar aula experimental</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <input type="hidden" id="bookingId">
+        <div class="mb-2"><label>Aluno</label><select id="bookingStudent" class="form-select"></select></div>
+        <div class="mb-2"><label>Data</label><input id="bookingDate" type="datetime-local" class="form-control"></div>
+        <div class="mb-2"><label>Aula</label><input id="bookingClass" class="form-control"></div>
+        <div class="mb-2"><label>Status</label><select id="bookingStatus" class="form-select"><option>agendado</option><option>realizado</option><option>cancelado</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Fechar</button><button class="btn btn-primary" type="submit">Salvar</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalPlan">
+  <div class="modal-dialog">
+    <form class="modal-content" id="formPlan">
+      <div class="modal-header"><h5 class="modal-title">Cadastrar/Editar Plano</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <input type="hidden" id="planId">
+        <div class="mb-2"><label>Nome</label><input required id="planName" class="form-control"></div>
+        <div class="mb-2"><label>Duração</label><select id="planDuration" class="form-select"><option value="mensal">Mensal</option><option value="trimestral">Trimestral</option><option value="anual">Anual</option></select></div>
+        <div class="mb-2"><label>Valor (R$)</label><input id="planValue" type="number" step="0.01" class="form-control"></div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Fechar</button><button class="btn btn-primary" type="submit">Salvar</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// ---------- UTIL ----------
+const qs = s => document.querySelector(s);
+const qsa = s => document.querySelectorAll(s);
+const uid = ()=> Math.random().toString(36).slice(2,9);
+
+// ---------- STORAGE KEYS ----------
+const KEY_STUDENTS = 'gym_students';
+const KEY_EQUIP = 'gym_equipments';
+const KEY_BOOK = 'gym_bookings';
+const KEY_PLANS = 'gym_plans';
+
+// ---------- APP STATE ----------
+function load(key){ try{ return JSON.parse(localStorage.getItem(key)) || [] }catch(e){return []}}
+function save(key, v){ localStorage.setItem(key, JSON.stringify(v)) }
+
+// ---------- NAV ----------
+qsa('.nav-link').forEach(a=>a.addEventListener('click', (e)=>{
+  e.preventDefault(); const t = a.dataset.target; showSection(t);
+}))
+function showSection(id){ qsa('.section-root').forEach(s=>s.classList.add('d-none')); qs('#'+id).classList.remove('d-none'); qs('#pageTitle').innerText = id.charAt(0).toUpperCase()+id.slice(1); }
+
+// ---------- DASHBOARD STATS ----------
+function updateCounts(){ const students = load(KEY_STUDENTS); const equips = load(KEY_EQUIP);
+  const active = students.filter(s=>s.status==='ativo').length;
+  const inactive = students.filter(s=>s.status==='inativo').length;
+  const pending = students.filter(s=>s.status==='pendente').length;
+  qs('#countActive').innerText = active; qs('#countInactive').innerText = inactive; qs('#countPending').innerText = pending; qs('#countEquip').innerText = equips.length;
+}
+
+// ---------- STUDENTS ----------
+function refreshStudentsTable(){ const students = load(KEY_STUDENTS); const tbody = qs('#studentsTable tbody'); tbody.innerHTML='';
+  students.forEach(s=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${s.name}</td><td>${s.cpf||''}</td><td>${s.phone||''}</td><td>${s.email||''}</td><td>${s.plan||''}</td><td>${s.status}</td><td class="table-actions"><button class="btn btn-sm btn-primary" data-id="${s.id}" data-action="edit">Editar</button><button class="btn btn-sm btn-danger" data-id="${s.id}" data-action="del">Excluir</button></td>`;
+    tbody.appendChild(tr);
+  })
+}
+
+// ---------- EQUIPMENTS ----------
+function refreshEquipTable(){ const list = load(KEY_EQUIP); const tbody = qs('#equipTable tbody'); tbody.innerHTML='';
+  list.forEach(e=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${e.name}</td><td>${e.desc||''}</td><td>${e.status}</td><td class="table-actions"><button class="btn btn-sm btn-primary" data-id="${e.id}" data-action="edit-e">Editar</button><button class="btn btn-sm btn-danger" data-id="${e.id}" data-action="del-e">Excluir</button></td>`;
+    tbody.appendChild(tr);
+  })
+}
+
+// ---------- PLANS ----------
+function refreshPlanTable(){ const plans = load(KEY_PLANS); const tbody = qs('#plansTable tbody'); tbody.innerHTML=''; const sel = qs('#studentPlan'); sel.innerHTML='';
+  plans.forEach(p=>{
+    const tr = document.createElement('tr'); tr.innerHTML = `<td>${p.name}</td><td>${p.duration}</td><td>R$ ${Number(p.value||0).toFixed(2)}</td><td class="table-actions"><button class="btn btn-sm btn-primary" data-id="${p.id}" data-action="edit-p">Editar</button><button class="btn btn-sm btn-danger" data-id="${p.id}" data-action="del-p">Excluir</button></td>`;
+    tbody.appendChild(tr);
+    const opt = document.createElement('option'); opt.value = p.name; opt.textContent = p.name + ' ('+p.duration+')'; sel.appendChild(opt);
+  })
+}
+
+// ---------- BOOKINGS ----------
+function refreshBookingsTable(){ const bookings = load(KEY_BOOK); const tbody = qs('#bookingsTable tbody'); tbody.innerHTML='';
+  bookings.forEach(b=>{
+    const tr = document.createElement('tr'); tr.innerHTML = `<td>${b.studentName||''}</td><td>${new Date(b.date).toLocaleString()}</td><td>${b.className}</td><td>${b.status}</td><td class="table-actions"><button class="btn btn-sm btn-primary" data-id="${b.id}" data-action="edit-b">Editar</button><button class="btn btn-sm btn-danger" data-id="${b.id}" data-action="del-b">Excluir</button></td>`;
+    tbody.appendChild(tr);
+  })
+}
+
+// ---------- QUICK LIST ----------
+function updateQuickList(){ const students = load(KEY_STUDENTS); const equips = load(KEY_EQUIP);
+  const html = `
+    <div><strong>Últimos 3 alunos</strong><ul>${students.slice(-3).reverse().map(s => `<li>${s.name} <small class="text-muted">(${s.status})</small></li>`).join('')}</ul></div>
+    <div><strong>Equipamentos com atenção</strong><ul>${equips.filter(e=>e.status!=='operando').slice(0,5).map(e=>`<li>${e.name} <small>(${e.status})</small></li>`).join('')||'<li><small class="text-muted">Nenhum</small></li>'}</ul></div>
+  `;
+  qs('#quickList').innerHTML = html;
+}
+
+// ---------- CHART ----------
+let chart;
+function buildChart(){
+  const ctx = qs('#chartEnrollments');
+  if(chart) chart.destroy();
+
+  const students = load(KEY_STUDENTS);
+
+  // pega mês e ano atuais
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear  = now.getFullYear();
+
+  // descobre quantos dias tem esse mês
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+  // inicializa array de contagem
+  const days = Array.from({length: daysInMonth}, (_,i)=>0);
+
+  students.forEach(s=>{
+    const d = new Date(s.createdAt || Date.now());
+    if(d.getMonth() === currentMonth && d.getFullYear() === currentYear){
+      days[d.getDate()-1]++; // dia começa em 1, índice em 0
+    }
+  });
+
+  // gera labels: 1, 2, 3, ... até último dia do mês
+  const labels = Array.from({length: daysInMonth}, (_,i)=> (i+1).toString());
+
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Novos cadastros no mês',
+        data: days,
+        fill: false,
+        borderColor: '#36a2eb',
+        backgroundColor: '#36a2eb',
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
+
+// ---------- ACTIONS ----------
+// Delegation for students table
+qs('#studentsTable').addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(!btn) return; const id = btn.dataset.id; const action = btn.dataset.action;
+  let arr = load(KEY_STUDENTS);
+  if(action==='del'){ arr = arr.filter(s=>s.id!==id); save(KEY_STUDENTS, arr); refreshAll(); }
+  if(action==='edit'){ const s = arr.find(x=>x.id===id); openStudentModal(s); }
+})
+
+// Equip table actions
+qs('#equipTable').addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(!btn) return; const id = btn.dataset.id; const action = btn.dataset.action; let arr = load(KEY_EQUIP);
+  if(action==='del-e'){ arr = arr.filter(s=>s.id!==id); save(KEY_EQUIP, arr); refreshAll(); }
+  if(action==='edit-e'){ const s = arr.find(x=>x.id===id); openEquipModal(s); }
+})
+
+// Plans
+qs('#plansTable').addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(!btn) return; const id = btn.dataset.id; const action = btn.dataset.action; let arr = load(KEY_PLANS);
+  if(action==='del-p'){ arr = arr.filter(s=>s.id!==id); save(KEY_PLANS, arr); refreshAll(); }
+  if(action==='edit-p'){ const s = arr.find(x=>x.id===id); openPlanModal(s); }
+})
+
+// Bookings
+qs('#bookingsTable').addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(!btn) return; const id = btn.dataset.id; const action = btn.dataset.action; let arr = load(KEY_BOOK);
+  if(action==='del-b'){ arr = arr.filter(s=>s.id!==id); save(KEY_BOOK, arr); refreshAll(); }
+  if(action==='edit-b'){ const s = arr.find(x=>x.id===id); openBookingModal(s); }
+})
+
+// ---------- MODALS helpers ----------
+const modalStudent = new bootstrap.Modal(qs('#modalStudent'));
+const modalEquip = new bootstrap.Modal(qs('#modalEquip'));
+const modalBooking = new bootstrap.Modal(qs('#modalBooking'));
+const modalPlan = new bootstrap.Modal(qs('#modalPlan'));
+
+function openStudentModal(data){ qs('#studentId').value = data?.id||''; qs('#studentName').value = data?.name||''; qs('#studentCPF').value = data?.cpf||''; qs('#studentPhone').value = data?.phone||''; qs('#studentEmail').value = data?.email||''; qs('#studentPlan').value = data?.plan||''; qs('#studentStatus').value = data?.status||'ativo'; modalStudent.show(); }
+function openEquipModal(data){ qs('#equipId').value = data?.id||''; qs('#equipName').value = data?.name||''; qs('#equipDesc').value = data?.desc||''; qs('#equipStatus').value = data?.status||'operando'; modalEquip.show(); }
+function openBookingModal(data){ // fill students
+  const students = load(KEY_STUDENTS); const sel = qs('#bookingStudent'); sel.innerHTML=''; students.forEach(s=>{ const opt=document.createElement('option'); opt.value=s.id; opt.textContent=s.name; sel.appendChild(opt); })
+  qs('#bookingId').value = data?.id||''; qs('#bookingDate').value = data? new Date(data.date).toISOString().slice(0,16) : '' ; qs('#bookingClass').value = data?.className||''; qs('#bookingStatus').value = data?.status||'agendado'; modalBooking.show(); }
+function openPlanModal(data){ qs('#planId').value = data?.id||''; qs('#planName').value = data?.name||''; qs('#planDuration').value = data?.duration||'mensal'; qs('#planValue').value = data?.value||''; modalPlan.show(); }
+
+// ---------- FORM SUBMITS ----------
+qs('#formStudent').addEventListener('submit', e=>{
+  e.preventDefault(); const id = qs('#studentId').value; const arr = load(KEY_STUDENTS);
+  const payload = { id: id||uid(), name: qs('#studentName').value.trim(), cpf: qs('#studentCPF').value.trim(), phone: qs('#studentPhone').value.trim(), email: qs('#studentEmail').value.trim(), plan: qs('#studentPlan').value, status: qs('#studentStatus').value, createdAt: id? arr.find(x=>x.id===id).createdAt : Date.now() };
+  let newArr; if(id){ newArr = arr.map(s=> s.id===id? payload : s) } else { newArr = [...arr,payload] }
+  save(KEY_STUDENTS,newArr); modalStudent.hide(); refreshAll(); })
+
+qs('#formEquip').addEventListener('submit', e=>{ e.preventDefault(); const id = qs('#equipId').value; const arr = load(KEY_EQUIP); const payload = { id:id||uid(), name:qs('#equipName').value.trim(), desc:qs('#equipDesc').value.trim(), status:qs('#equipStatus').value }; let newArr = id? arr.map(z=> z.id===id? payload:z) : [...arr,payload]; save(KEY_EQUIP,newArr); modalEquip.hide(); refreshAll(); })
+
+qs('#formPlan').addEventListener('submit', e=>{ e.preventDefault(); const id = qs('#planId').value; const arr = load(KEY_PLANS); const payload = { id:id||uid(), name:qs('#planName').value.trim(), duration:qs('#planDuration').value, value: Number(qs('#planValue').value) }; let newArr = id? arr.map(z=> z.id===id? payload:z) : [...arr,payload]; save(KEY_PLANS,newArr); modalPlan.hide(); refreshAll(); })
+
+qs('#formBooking').addEventListener('submit', e=>{ e.preventDefault(); const id = qs('#bookingId').value; const arr = load(KEY_BOOK); const students = load(KEY_STUDENTS); const student = students.find(s=>s.id===qs('#bookingStudent').value);
+  const payload = { id:id||uid(), studentId: student?.id, studentName: student?.name, date: new Date(qs('#bookingDate').value).toISOString(), className: qs('#bookingClass').value, status: qs('#bookingStatus').value };
+  let newArr = id? arr.map(z=> z.id===id? payload:z) : [...arr,payload]; save(KEY_BOOK,newArr); modalBooking.hide(); refreshAll(); })
+
+// ---------- BUTTONS ----------
+qs('#openAddStudent').addEventListener('click', ()=>openStudentModal()); qs('#addStudentBtnTop').addEventListener('click', ()=>openStudentModal()); qs('#openEquip').addEventListener('click', ()=>openEquipModal()); qs('#openBooking').addEventListener('click', ()=>openBookingModal()); qs('#openPlan').addEventListener('click', ()=>openPlanModal());
+
+qs('#btnReset').addEventListener('click', ()=>{ if(confirm('Limpar todos os dados locais?')){ localStorage.removeItem(KEY_STUDENTS); localStorage.removeItem(KEY_EQUIP); localStorage.removeItem(KEY_BOOK); localStorage.removeItem(KEY_PLANS); refreshAll(); } })
+
+qs('#openSample').addEventListener('click', ()=>{ if(confirm('Adicionar dados de exemplo?')){ seedSample(); refreshAll(); } })
+
+// ---------- SAMPLE DATA ----------
+function seedSample(){ const students = [];
+  const names=['Ana','Bruno','Carlos','Daniela','Eduardo','Fabiana','Gustavo','Helena','Igor','Julia'];
+  for(let i=0;i<12;i++){ const created = new Date(); created.setMonth(i); students.push({id:uid(), name:names[i%names.length]+' '+(Math.floor(Math.random()*900)+100), cpf:'000.000.000-0'+i, phone:'(99)9'+(10000000+i), email: names[i%names.length].toLowerCase()+i+'@mail.com', plan: ['Mensal','Trimestral','Anual'][i%3], status: ['ativo','inativo','pendente'][i%3], createdAt: created.getTime() }) }
+  const equips = [{id:uid(), name:'Esteira 01', desc:'Cardio', status:'operando'},{id:uid(), name:'Bicicleta 01', desc:'Cardio', status:'manutencao'},{id:uid(), name:'Supino', desc:'Força', status:'quebrado'}];
+  const plans = [{id:uid(), name:'Mensal', duration:'mensal', value:120},{id:uid(), name:'Trimestral', duration:'trimestral', value:300},{id:uid(), name:'Anual', duration:'anual', value:1000}];
+  const bookings = [{id:uid(), studentId:students[0].id, studentName:students[0].name, date:new Date().toISOString(), className:'Avaliação inicial', status:'agendado'}];
+  save(KEY_STUDENTS, students); save(KEY_EQUIP, equips); save(KEY_PLANS, plans); save(KEY_BOOK, bookings);
+}
+
+// ---------- REFRESH ALL ----------
+function refreshAll(){ updateCounts(); refreshStudentsTable(); refreshEquipTable(); refreshPlanTable(); refreshBookingsTable(); updateQuickList(); buildChart(); }
+
+// initial
+refreshAll();
+
+</script>
 </body>
 </html>
