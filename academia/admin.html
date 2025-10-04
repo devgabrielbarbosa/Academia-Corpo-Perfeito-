@@ -74,6 +74,7 @@ border-bottom: 1px solid #ddd;
         <a class="nav-link text-white" href="#" data-target="agendamentos">Agendamentos</a>
         <a class="nav-link text-white" href="#" data-target="equipamentos">Equipamentos</a>
         <a class="nav-link text-white" href="#" data-target="planos">Planos</a>
+        <a class="nav-link text-white" href="#" data-target="notfication">Notificação</a>
       </div>
       <div class="mt-auto">
         <button id="btnReset" class="btn btn-sm btn-outline-light w-100">Resetar dados</button>
@@ -229,7 +230,106 @@ border-bottom: 1px solid #ddd;
           </div>
         </div>
       </section>
+      <section id="notfication" class="d-none section-root">
+ <div class="app">
+    <div class="card controls">
+      <div class="row">
+        <label>Data simulada</label>
+        <input id="simDate" type="text" readonly />
+      </div>
 
+
+  <div class="row">
+    <label>Velocidade (dias / tick)</label>
+    <input id="speed" type="range" min="0" max="30" value="1" />
+    <div class="small" id="speedLabel">1 dia / tick</div>
+  </div>
+
+  <div class="row">
+    <label>Estado</label>
+    <div style="display:flex;gap:8px">
+      <button id="startBtn">Iniciar</button>
+      <button id="pauseBtn">Pausar</button>
+      <button id="advanceBtn">Avançar +1 dia</button>
+    </div>
+  </div>
+
+  <div style="margin-top:8px" class="row">
+    <label>Enviar quando:</label>
+    <div class="toggles" id="toggleGroup">
+      <button data-key="birthday" class="active">Aniversário</button>
+      <button data-key="dueSoon" class="active">Fatura Próxima</button>
+      <button data-key="overdue" class="active">Fatura Atrasada</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <label>Dias antes (fatura próxima)</label>
+    <input id="dueDays" type="number" min="0" value="3" />
+  </div>
+
+  <hr style="border:none;border-top:1px solid rgba(255,255,255,0.03);margin:12px 0" />
+
+  <div>
+    <strong>Adicionar usuário de teste</strong>
+    <div style="display:grid;gap:8px;margin-top:8px">
+      <input id="name" type="text" placeholder="Nome (ex: João)" />
+      <input id="email" type="text" placeholder="Email (simulado)" />
+      <input id="birthday" type="date" />
+      <input id="dueDate" type="date" />
+      <div style="display:flex;gap:6px">
+        <button id="addUser">Adicionar usuário</button>
+        <button id="addSample">Adicionar exemplos</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:12px">
+    <strong>Usuários (simulados)</strong>
+    <div class="users-list" id="usersList"></div>
+  </div>
+
+  <footer>
+    <div class="small">Modo de simulação: nada é realmente enviado — apenas toasts e histórico gravados no seu navegador.</div>
+  </footer>
+</div>
+
+<div class="main-grid">
+  <div class="card">
+    <div class="clock">
+      <div>
+        <div class="small">Relógio simulado</div>
+        <div style="font-weight:700" id="bigClock">—</div>
+        <div class="muted small" id="status">Pausado</div>
+      </div>
+      <div style="text-align:right">
+        <div class="pill" id="nextAction">Próximo disparo: —</div>
+        <div style="height:6px"></div>
+        <div class="small muted">Mensagens enviadas: <span id="sentCount">0</span></div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:6px">Histórico de disparos</h3>
+    <div class="history" id="history"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Fila & Testes</h3>
+    <div class="small" style="margin-bottom:8px">Toasts aparecerão no canto superior direito quando um evento for disparado.</div>
+    <div style="display:grid;gap:8px">
+      <button id="clearHistory">Limpar histórico</button>
+      <button id="resetSim">Resetar simulação</button>
+      <div class="small muted">Use "Adicionar exemplos" para popular com dados de teste.</div>
+    </div>
+  </div>
+</div>
+
+  </div>
+
+  <div class="toasts" id="toasts"></div>
+
+
+      </section>
     </main>
   </div>
 </div>
@@ -299,7 +399,386 @@ border-bottom: 1px solid #ddd;
   </div>
 </div>
 
-<!-- Scripts -->
+  <style>
+   
+    *{box-sizing:border-box;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+    
+    h1{margin:0 0 6px;font-size:20px;}
+    p.lead{margin:0 0 18px;color:var(--muted);}
+    .app{display:grid;grid-template-columns:340px 1fr;gap:20px;}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:14px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.02);}
+    .controls .row{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
+    label{font-size:13px;color:var(--muted);min-width:120px;}
+    input[type="text"], input[type="date"], input[type="number"], select{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;}
+    button{background:var(--accent);color:#022 top;border:0;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600;}
+    .small{font-size:12px;color:var(--muted);}
+    .users-list{max-height:44vh;overflow:auto;margin-top:8px;}
+    .user{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;margin-bottom:6px;background:rgba(255,255,255,0.01);}
+    .user b{display:block}
+    .toggles{display:flex;gap:6px;flex-wrap:wrap;}
+    .toggles button{background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--muted);padding:6px 8px;border-radius:8px;cursor:pointer;}
+    .toggles button.active{background:rgba(125,211,252,0.12);color:var(--accent);border-color:rgba(125,211,252,0.2);}
+    .main-grid{display:grid;grid-template-columns:1fr 360px;gap:20px;}
+    .clock{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;margin-bottom:12px;}
+    .toasts{position:fixed;right:18px;top:18px;display:flex;flex-direction:column;gap:8px;z-index:9999;}
+    .toast{min-width:280px;padding:12px;border-radius:10px;background:linear-gradient(90deg,#051124, #062033);box-shadow:0 6px 18px rgba(2,6,23,0.6);border-left:6px solid var(--accent);}
+    .toast.success{border-left-color:var(--success)}
+    .toast.warn{border-left-color:#fbbf24}
+    .toast.danger{border-left-color:var(--danger)}
+    .history{max-height:58vh;overflow:auto;padding:8px;border-radius:8px;background:rgba(0,0,0,0.05)}
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
+    @media (max-width:900px){.app{grid-template-columns:1fr;} .main-grid{grid-template-columns:1fr;} .card{padding:10px}}
+    /* helper */
+    .muted{color:var(--muted);font-size:13px}
+    .pill{padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.02);font-size:12px}
+  </style>
+</head>
+<body>
+
+ 
+
+
+<script>
+    const state = {
+      users: [],
+      sentLog: [], // {id, userId, type, dateSim, message}
+      sentFlags: {}, // evitar duplicatas: key = `${userId}_${type}_${dateISO}`
+      settings: {
+        dueDays: 3,
+        enabled: { birthday:true, dueSoon:true, overdue:true },
+        speedDaysPerTick: 1
+      },
+      simDate: new Date(), // data simulada corrente
+      running: false,
+      tickMs: 1000, // cada tick de clock (real)
+      intervalId: null
+    };
+
+    // --- Util helpers ---
+    const $ = sel => document.querySelector(sel);
+    const qis = sel => document.querySelectorAll(sel);
+    const fmtDate = d => d.toLocaleString();
+    const isoDate = d => (new Date(d.getFullYear(), d.getMonth(), d.getDate())).toISOString().slice(0,10);
+
+    // --- Inicialização elementos ---
+    const simDateEl = $('#simDate');
+    const bigClockEl = $('#bigClock');
+    const statusEl = $('#status');
+    const speedEl = $('#speed');
+    const speedLabel = $('#speedLabel');
+    const startBtn = $('#startBtn');
+    const pauseBtn = $('#pauseBtn');
+    const advanceBtn = $('#advanceBtn');
+    const toggleGroup = $('#toggleGroup');
+    const dueDaysEl = $('#dueDays');
+    const usersListEl = $('#usersList');
+    const historyEl = $('#history');
+    const toastsEl = $('#toasts');
+    const sentCountEl = $('#sentCount');
+
+    // form
+    const addUserBtn = $('#addUser');
+    const addSampleBtn = $('#addSample');
+    const nameEl = $('#name'); const emailEl = $('#email'); const birthdayEl = $('#birthday'); const dueDateEl = $('#dueDate');
+    const clearHistoryBtn = $('#clearHistory'); const resetSimBtn = $('#resetSim');
+
+    // --- Funções de UI ---
+    function renderUsers(){
+      usersListEl.innerHTML = '';
+      state.users.forEach(u=>{
+        const div = document.createElement('div');
+        div.className = 'user';
+        div.innerHTML = `<div>
+          <b>${u.name}</b>
+          <div class="small muted">${u.email}</div>
+          <div class="small">Aniv: ${u.birthday} • Venc: ${u.dueDate}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="small muted">id:${u.id}</div>
+          <div style="height:6px"></div>
+          <button data-id="${u.id}" class="del">Remover</button>
+        </div>`;
+        usersListEl.appendChild(div);
+      });
+      usersListEl.querySelectorAll('.del').forEach(b=>{
+        b.addEventListener('click', e=>{
+          const id = e.currentTarget.dataset.id;
+          state.users = state.users.filter(u=>u.id!==id);
+          renderUsers(); renderHistory();
+        });
+      });
+    }
+
+    function addToast(type, title, text){
+      const t = document.createElement('div');
+      t.className = 'toast ' + (type || '');
+      t.innerHTML = `<div style="font-weight:700">${title}</div><div class="small muted">${text}</div>`;
+      toastsEl.appendChild(t);
+      setTimeout(()=>{ t.style.opacity=0; t.style.transform='translateX(20px)'; }, 3500);
+      setTimeout(()=>t.remove(), 4500);
+    }
+
+    function renderHistory(){
+      historyEl.innerHTML = '';
+      const reversed = [...state.sentLog].reverse();
+      reversed.slice(0,200).forEach(item=>{
+        const d = new Date(item.dateSim);
+        const el = document.createElement('div');
+        el.style.padding='8px';
+        el.style.borderBottom='1px solid rgba(255,255,255,0.02)';
+        el.innerHTML = `<div style="font-weight:700">${item.title}</div>
+                        <div class="small muted">${item.message}</div>
+                        <div class="small" style="margin-top:6px">${fmtDate(d)} — para <b>${item.userName}</b></div>`;
+        historyEl.appendChild(el);
+      });
+      sentCountEl.textContent = state.sentLog.length;
+    }
+
+    // --- Persistência simples (localStorage) ---
+    function saveLocal(){
+      try{
+        const save = {
+          users: state.users,
+          sentLog: state.sentLog,
+          sentFlags: state.sentFlags,
+          simDate: state.simDate.toISOString(),
+          settings: state.settings
+        };
+        localStorage.setItem('simMessages_v1', JSON.stringify(save));
+      }catch(e){ console.warn('save fail', e) }
+    }
+    function loadLocal(){
+      try{
+        const raw = localStorage.getItem('simMessages_v1');
+        if(!raw) return;
+        const obj = JSON.parse(raw);
+        state.users = obj.users || [];
+        state.sentLog = obj.sentLog || [];
+        state.sentFlags = obj.sentFlags || {};
+        state.settings = obj.settings || state.settings;
+        if(obj.simDate) state.simDate = new Date(obj.simDate);
+      }catch(e){ console.warn('load fail', e) }
+    }
+
+    // --- Lógica de disparos (regras) ---
+    function checkRulesAndSend(){
+      // roda por cada usuário e avalia três regras
+      state.users.forEach(u=>{
+        // birthday: compara mês-dia
+        if(state.settings.enabled.birthday){
+          const [y,m,d] = u.birthday.split('-').map(Number);
+          const sim = state.simDate;
+          if(sim.getMonth()+1 === m && sim.getDate() === d){
+            triggerOnce(u, 'birthday', `Feliz aniversário, ${u.name}! 🎉`, `Aniversário de ${u.name} — ${u.email}`);
+          }
+        }
+
+        // dueSoon: dias antes do vencimento
+        if(state.settings.enabled.dueSoon){
+          const due = new Date(u.dueDate + 'T00:00:00');
+          const diffDays = Math.floor((due - new Date(state.simDate.getFullYear(), state.simDate.getMonth(), state.simDate.getDate())) / (24*3600*1000));
+          if(diffDays >=0 && diffDays <= state.settings.dueDays){
+            triggerOnce(u, 'dueSoon_'+diffDays, `Sua fatura vence em ${diffDays} dia(s)`, `Vencimento: ${u.dueDate} (${u.email})`);
+          }
+        }
+
+        // overdue: já passou o vencimento
+        if(state.settings.enabled.overdue){
+          const due = new Date(u.dueDate + 'T00:00:00');
+          if(state.simDate > due){
+            const overdueDays = Math.floor((state.simDate - due)/(24*3600*1000));
+            triggerOnce(u, 'overdue', `Fatura atrasada: ${overdueDays} dia(s)`, `Vencimento: ${u.dueDate}, já passaram ${overdueDays} dia(s).`);
+          }
+        }
+      });
+
+      // salvar estado
+      saveLocal();
+      renderHistory();
+    }
+
+    function triggerOnce(user, type, title, message){
+      const key = `${user.id}_${type}_${isoDate(state.simDate)}`;
+      // especial: tipos que devem apenas ser uma vez por evento (birthday/dueSoon with same diff)
+      if(state.sentFlags[key]) return;
+      // evitar duplicatas similares no mesmo dia (por tipo genérico)
+      // atente: para 'overdue' queremos evitar repetir todos os ticks — marcamos por user+type sem data
+      const keyNonDate = (type==='overdue') ? `${user.id}_${type}` : key;
+      if(state.sentFlags[keyNonDate]) return;
+
+      // registrar
+      const entry = {
+        id: Math.random().toString(36).slice(2,9),
+        userId: user.id,
+        userName: user.name,
+        type,
+        title,
+        message,
+        dateSim: state.simDate.toISOString()
+      };
+      state.sentLog.push(entry);
+      state.sentFlags[key] = true;
+      if(type==='overdue') state.sentFlags[`${user.id}_overdue`] = true;
+
+      // UI
+      const kind = type.startsWith('overdue') ? 'danger' : (type.startsWith('dueSoon') ? 'warn' : 'success');
+      addToast(kind, title, message);
+    }
+
+    // --- Motor do tempo ---
+    function tick(){
+      // avança simDate por X dias por tick
+      const days = Number(state.settings.speedDaysPerTick) || 1;
+      state.simDate.setDate(state.simDate.getDate() + days);
+      updateClock();
+      checkRulesAndSend();
+    }
+
+    function start(){
+      if(state.running) return;
+      state.running = true;
+      statusEl.textContent = 'Executando';
+      state.intervalId = setInterval(tick, state.tickMs);
+    }
+    function pause(){
+      if(!state.running) return;
+      state.running = false;
+      statusEl.textContent = 'Pausado';
+      clearInterval(state.intervalId);
+      state.intervalId = null;
+    }
+
+    function updateClock(){
+      simDateEl.value = state.simDate.toISOString().slice(0,10) + ' • ' + state.simDate.toLocaleTimeString();
+      bigClockEl.textContent = state.simDate.toLocaleString();
+      // estimate next action (simple: when next user event occurs)
+      let soon = null;
+      state.users.forEach(u=>{
+        const due = new Date(u.dueDate + 'T00:00:00');
+        const bday = (() => {
+          const [y,m,d] = u.birthday.split('-').map(Number);
+          return new Date(state.simDate.getFullYear(), m-1, d);
+        })();
+        [bday, due].forEach(dt=>{
+          const diff = dt - state.simDate;
+          if(diff >= -1 && (soon===null || diff < soon.diff)){ soon = {diff, dt, user:u} }
+        });
+      });
+      $('#nextAction').textContent = soon ? 'Próximo (estim): ' + new Date(soon.dt).toLocaleDateString() : 'Próximo disparo: —';
+    }
+
+    // --- Eventos UI ---
+    speedEl.addEventListener('input', e=>{
+      const v = Number(e.target.value);
+      speedLabel.textContent = `${v} dia(s) / tick`;
+      state.settings.speedDaysPerTick = v;
+    });
+
+    startBtn.addEventListener('click', ()=>start());
+    pauseBtn.addEventListener('click', ()=>pause());
+    advanceBtn.addEventListener('click', ()=>{
+      // avança 1 dia imediatamente
+      state.simDate.setDate(state.simDate.getDate()+1);
+      updateClock();
+      checkRulesAndSend();
+      saveLocal();
+    });
+
+    toggleGroup.querySelectorAll('button').forEach(b=>{
+      b.addEventListener('click', e=>{
+        const key = b.dataset.key;
+        const on = !b.classList.contains('active');
+        if(on) b.classList.add('active'); else b.classList.remove('active');
+        state.settings.enabled[key] = on;
+      });
+    });
+
+    dueDaysEl.addEventListener('change', e=>{
+      state.settings.dueDays = Number(e.target.value);
+    });
+
+    addUserBtn.addEventListener('click', ()=>{
+      const name = nameEl.value.trim()||'Anon';
+      const email = emailEl.value.trim()||'anon@example.com';
+      const birthday = birthdayEl.value || isoDate(new Date());
+      const dueDate = dueDateEl.value || isoDate(new Date(new Date().setDate(new Date().getDate()+7)));
+      const id = Math.random().toString(36).slice(2,9);
+      state.users.push({id, name, email, birthday, dueDate});
+      nameEl.value=''; emailEl.value=''; birthdayEl.value=''; dueDateEl.value='';
+      renderUsers(); saveLocal();
+    });
+
+    addSampleBtn.addEventListener('click', ()=>{
+      // adiciona alguns testes com datas próximas do simDate
+      const base = new Date(state.simDate);
+      const iso = d => d.toISOString().slice(0,10);
+      const samples = [
+        {name:'Mariana', email:'maria@ex.com', birthday: iso(new Date(base.getFullYear(), base.getMonth(), base.getDate())), dueDate: iso(new Date(base.getFullYear(), base.getMonth(), base.getDate()+2))},
+        {name:'João', email:'joao@ex.com', birthday: iso(new Date(base.getFullYear(), base.getMonth(), base.getDate()+1)), dueDate: iso(new Date(base.getFullYear(), base.getMonth(), base.getDate()-1))},
+        {name:'Clara', email:'clara@ex.com', birthday: iso(new Date(base.getFullYear(), base.getMonth()+1, base.getDate())), dueDate: iso(new Date(base.getFullYear(), base.getMonth(), base.getDate()+5))}
+      ];
+      samples.forEach(s=>{
+        s.id = Math.random().toString(36).slice(2,9);
+        state.users.push(s);
+      });
+      renderUsers(); saveLocal();
+    });
+
+    clearHistoryBtn.addEventListener('click', ()=>{
+      state.sentLog = []; state.sentFlags = {};
+      saveLocal(); renderHistory();
+    });
+
+    resetSimBtn.addEventListener('click', ()=>{
+      pause();
+      state.users = []; state.sentLog = []; state.sentFlags = {}; state.settings = {dueDays:3, enabled:{birthday:true,dueSoon:true,overdue:true}, speedDaysPerTick:1};
+      state.simDate = new Date();
+      speedEl.value = 1; speedLabel.textContent='1 dia / tick'; dueDaysEl.value=3;
+      renderUsers(); renderHistory(); updateClock(); saveLocal();
+    });
+
+    // --- Carregamento inicial ---
+    loadLocal();
+    // se nenhum usuário, populamos exemplo
+    if(state.users.length===0){
+      // usuário exemplo com datas próximas para testes rápidos
+      const today = new Date();
+      const iso = d => d.toISOString().slice(0,10);
+      state.users = [
+        {id:'u1', name:'Alice', email:'alice@ex.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate())), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+2))},
+        {id:'u2', name:'Pedro', email:'pedro@ex.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), (today.getDate()+1))), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1))}
+      ];
+    }
+    // carregar configurações
+    speedEl.value = state.settings.speedDaysPerTick || 1;
+    speedLabel.textContent = `${speedEl.value} dia(s) / tick`;
+    dueDaysEl.value = state.settings.dueDays;
+    // habilitar toggles UI
+    toggleGroup.querySelectorAll('button').forEach(b=>{
+      const key = b.dataset.key;
+      if(state.settings.enabled[key]) b.classList.add('active'); else b.classList.remove('active');
+    });
+
+    // start paused by default
+    updateClock();
+    renderUsers();
+    renderHistory();
+
+    // start auto if you want uncomment:
+    // start();
+
+    // salvar automaticamente periodicamente
+    setInterval(saveLocal, 5000);
+
+    // small UX: press space to toggle run/pause
+    window.addEventListener('keydown', e=>{
+      if(e.code==='Space'){ e.preventDefault(); state.running ? pause() : start(); }
+    });
+
+    // good measure
+    console.log('Simulador pronto — salve como HTML e abra no navegador.');
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
