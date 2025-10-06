@@ -17,6 +17,8 @@
     .small-chart{height:90px}
     .muted-small{font-size:12px;color:#6c757d}
     .table-actions button{margin-right:6px}
+    img{max-width:100%;height:auto;border-radius:8px ;  background-color: transparent;
+  mix-blend-mode: multiply;}
     @media (max-width:991px){.sidebar{height:auto;padding-bottom:20px}}
     body {
 font-family: Arial, sans-serif;
@@ -65,8 +67,8 @@ border-bottom: 1px solid #ddd;
 <div class="container-fluid">
   <div class="row">
     <nav class="col-lg-2 sidebar p-3 d-flex flex-column gap-3">
-      <h4 class="mb-0">Academia</h4>
-      <small>Dashboard local • LocalStorage</small>
+       <a href="./admin.html"><img src="./Imagem do WhatsApp de 2025-10-05 à(s) 23.04.19_566a9439.jpg" alt=""></a>
+         <h4 class="mb-0">Academia Corpo Perfeito</h4>
       <hr style="border-color:rgba(255,255,255,0.12)"/>
       <div class="nav flex-column">
         <a class="nav-link active text-white" href="#" data-target="dashboard">Dashboard</a>
@@ -76,9 +78,7 @@ border-bottom: 1px solid #ddd;
         <a class="nav-link text-white" href="#" data-target="planos">Planos</a>
         <a class="nav-link text-white" href="#" data-target="notfication">Notificação</a>
       </div>
-      <div class="mt-auto">
-        <button id="btnReset" class="btn btn-sm btn-outline-light w-100">Resetar dados</button>
-      </div>
+
     </nav>
 
     <main class="col-lg-10 p-4">
@@ -168,23 +168,43 @@ border-bottom: 1px solid #ddd;
       </section>
 
       <section id="alunos" class="d-none section-root">
-        <div class="card p-3 mb-3">
-          <div class="d-flex justify-content-between align-items-center">
-            <h5>Alunos</h5>
-            <div>
-              <button class="btn btn-sm btn-success" id="addStudentBtnTop">Cadastrar aluno</button>
-            </div>
-          </div>
-          <div class="mt-3 table-responsive">
-            <table class="table table-striped table-hover" id="studentsTable">
-              <thead>
-                <tr><th>Nome</th><th>CPF</th><th>Telefone</th><th>E-mail</th><th>Plano</th><th>Status</th><th>Ações</th></tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
+  <div class="card p-3 mb-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5>Alunos</h5>
+      <div>
+        <button class="btn btn-sm btn-success" id="addStudentBtnTop">Cadastrar aluno</button>
+      </div>
+    </div>
+
+    <div class="mt-3 table-responsive">
+      <!-- Campo de busca -->
+      <div class="search-box mb-3">
+        <label for="searchInput" class="form-label">Buscar aluno:</label>
+        <input type="text" id="searchInput" placeholder="Digite o nome...">
+
+      </div>
+
+      <!-- Tabela de alunos -->
+      <table class="table table-striped table-hover" id="studentsTable">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Telefone</th>
+            <th>E-mail</th>
+            <th>Plano</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Alunos serão inseridos aqui via JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
       </section>
+
 
       <section id="agendamentos" class="d-none section-root">
         <div class="card p-3 mb-3">
@@ -200,21 +220,31 @@ border-bottom: 1px solid #ddd;
           </div>
         </div>
       </section>
+<section id="equipamentos" class=" d-none section-root">
+  <div class="card p-3 mb-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5>Equipamentos</h5>
+      <button class="btn btn-sm btn-secondary" id="openEquip">Cadastrar equipamento</button>
+    </div>
 
-      <section id="equipamentos" class="d-none section-root">
-        <div class="card p-3 mb-3">
-          <div class="d-flex justify-content-between">
-            <h5>Equipamentos</h5>
-            <button class="btn btn-sm btn-secondary" id="openEquip">Cadastrar equipamento</button>
-          </div>
-          <div class="mt-3">
-            <table class="table" id="equipTable">
-              <thead><tr><th>Nome</th><th>Descrição</th><th>Status</th><th>Ações</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+    <div class="mt-3 table-responsive">
+      <table class="table table-striped table-hover" id="equipTable">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Os 40 equipamentos gerados por seedEquipments() serão inseridos aqui via JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 
       <section id="planos" class="d-none section-root">
         <div class="card p-3 mb-3">
@@ -437,8 +467,12 @@ border-bottom: 1px solid #ddd;
 
  
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <script>
+
+    document.addEventListener('DOMContentLoaded', () => {
     const state = {
       users: [],
       sentLog: [], // {id, userId, type, dateSim, message}
@@ -740,15 +774,33 @@ border-bottom: 1px solid #ddd;
     // --- Carregamento inicial ---
     loadLocal();
     // se nenhum usuário, populamos exemplo
-    if(state.users.length===0){
-      // usuário exemplo com datas próximas para testes rápidos
-      const today = new Date();
-      const iso = d => d.toISOString().slice(0,10);
-      state.users = [
-        {id:'u1', name:'Alice', email:'alice@ex.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate())), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+2))},
-        {id:'u2', name:'Pedro', email:'pedro@ex.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), (today.getDate()+1))), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1))}
-      ];
-    }
+if(state.users.length===0){
+  const today = new Date();
+  const iso = d => d.toISOString().slice(0,10);
+  state.users = [
+    {id:'u1', name:'Alice', email:'alice@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate())), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+2))},
+    {id:'u2', name:'Pedro', email:'pedro@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+1)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1))},
+    {id:'u3', name:'Mariana', email:'mariana@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+2)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+3))},
+    {id:'u4', name:'João', email:'joao@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+4))},
+    {id:'u5', name:'Clara', email:'clara@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+3)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+5))},
+    {id:'u6', name:'Rafael', email:'rafael@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()-2)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+6))},
+    {id:'u7', name:'Fernanda', email:'fernanda@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+4)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+7))},
+    {id:'u8', name:'Thiago', email:'thiago@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()-3)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+8))},
+    {id:'u9', name:'Patrícia', email:'patricia@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+5)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+9))},
+    {id:'u10', name:'Carlos', email:'carlos@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()-4)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+10))},
+    {id:'u11', name:'Daniela', email:'daniela@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+6)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+11))},
+    {id:'u12', name:'Eduardo', email:'eduardo@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()-5)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+12))},
+    {id:'u13', name:'Fabiana', email:'fabiana@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+7)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+13))},
+    {id:'u14', name:'Gustavo', email:'gustavo@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()-6)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+14))},
+    {id:'u15', name:'Helena', email:'helena@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+8)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+15))},
+    {id:'u16', name:'Igor', email:'igor@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+16))},
+    {id:'u17', name:'Julia', email:'julia@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+9)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+17))},
+    {id:'u18', name:'Marcos', email:'marcos@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()-8)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+18))},
+    {id:'u19', name:'Sofia', email:'sofia@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+10)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+19))},
+    {id:'u20', name:'William', email:'william@.com', birthday: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()-9)), dueDate: iso(new Date(today.getFullYear(), today.getMonth(), today.getDate()+20))}
+  ];
+}
+
     // carregar configurações
     speedEl.value = state.settings.speedDaysPerTick || 1;
     speedLabel.textContent = `${speedEl.value} dia(s) / tick`;
@@ -764,6 +816,135 @@ border-bottom: 1px solid #ddd;
     renderUsers();
     renderHistory();
 
+    document.addEventListener('DOMContentLoaded', ()=>{
+
+  // --- Estado global ---
+  const state = {
+    users: [],
+    sentLog: [],
+    sentFlags: {},
+    settings: { dueDays: 3, enabled:{birthday:true,dueSoon:true,overdue:true}, speedDaysPerTick:1 },
+    simDate: new Date(),
+    running: false,
+    tickMs: 1000,
+    intervalId: null
+  };
+
+  let chart; // gráfico global
+
+  // --- Seletores ---
+  const usersListEl = document.querySelector('#usersList');
+  const searchInput = document.querySelector('#searchInput');
+  const studentsTable = document.querySelector('#studentsTable tbody');
+  const chartCtx = document.querySelector('#chartEnrollments');
+
+  // --- Funções auxiliares ---
+  const isoDate = d => new Date(d.getFullYear(),d.getMonth(),d.getDate()).toISOString().slice(0,10);
+
+  // --- Seed de 100 alunos aleatórios ---
+  function seedSample(){
+    state.users = [];
+    const firstNames = ['Ana','Bruno','Carlos','Daniela','Eduardo','Fabiana','Gustavo','Helena','Igor','Julia','Marcos','Patrícia','Rodrigo','Sofia','Thiago','Vanessa','William','Yasmin','Zeca','Paula','Rafael','Fernanda','Clara','Leonardo'];
+    const lastNames  = ['Silva','Souza','Oliveira','Santos','Pereira','Ferreira','Almeida','Costa','Nascimento','Rodrigues','Gomes','Martins','Barbosa','Melo','Cardoso','Azevedo','Dias','Freitas','Teixeira','Correia'];
+    const plans = ['Mensal','Trimestral','Anual'];
+    const statusList = ['ativo','inativo','pendente'];
+
+    const randChoice = arr => arr[Math.floor(Math.random()*arr.length)];
+    const randCPF = () => Array.from({length:11},()=>Math.floor(Math.random()*10)).join('').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+    const randPhone = () => `(63) 9${Array.from({length:8},()=>Math.floor(Math.random()*10)).join('')}`;
+    const randFullName = () => `${randChoice(firstNames)} ${randChoice(lastNames)} ${randChoice(lastNames)}`;
+
+    const now = new Date();
+    for(let i=0;i<100;i++){
+      const created = new Date(now.getFullYear(), Math.floor(Math.random()*12), Math.floor(Math.random()*28)+1);
+      state.users.push({
+        id: Math.random().toString(36).slice(2,9),
+        name: randFullName(),
+        cpf: randCPF(),
+        phone: randPhone(),
+        email: `user${i}@mail.com`,
+        plan: randChoice(plans),
+        status: randChoice(statusList),
+        createdAt: created.getTime(),
+        birthday: isoDate(created),
+        dueDate: isoDate(new Date(created.getTime() + 7*24*3600*1000))
+      });
+    }
+
+    renderUsers();
+    buildChart();
+  }
+
+  // --- Render tabela de alunos ---
+  function renderUsers(list=state.users){
+    studentsTable.innerHTML = '';
+    if(list.length===0){
+      studentsTable.innerHTML = '<tr><td colspan="7">Nenhum aluno encontrado</td></tr>';
+      return;
+    }
+    list.forEach(u=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${u.name}</td>
+        <td>${u.cpf}</td>
+        <td>${u.phone}</td>
+        <td>${u.email}</td>
+        <td>${u.plan}</td>
+        <td>${u.status}</td>
+        <td>
+          <button class="btn btn-sm btn-primary">Editar</button>
+          <button class="btn btn-sm btn-danger">Excluir</button>
+        </td>`;
+      studentsTable.appendChild(tr);
+    });
+  }
+
+  // --- Busca por nome ---
+  searchInput.addEventListener('input', ()=>{
+    const query = searchInput.value.toLowerCase();
+    const filtered = state.users.filter(u=>u.name.toLowerCase().includes(query));
+    renderUsers(filtered);
+  });
+
+  // --- Gráfico de cadastros ---
+  function buildChart(){
+    if(chart) chart.destroy();
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    const daysInMonth = new Date(currentYear,currentMonth+1,0).getDate();
+    const days = Array.from({length: daysInMonth}, ()=>0);
+
+    state.users.forEach(u=>{
+      const d = new Date(u.createdAt);
+      if(d.getMonth()===currentMonth && d.getFullYear()===currentYear){
+        days[d.getDate()-1]++;
+      }
+    });
+
+    const labels = Array.from({length: daysInMonth}, (_,i)=> (i+1).toString());
+
+    chart = new Chart(chartCtx,{
+      type:'line',
+      data:{
+        labels,
+        datasets:[{label:'Novos cadastros no mês', data:days, borderColor:'#36a2eb', backgroundColor:'#36a2eb', fill:false, tension:0.3}]
+      },
+      options:{responsive:true, plugins:{legend:{display:true}}, scales:{y:{beginAtZero:true}}}
+    });
+  }
+
+  // --- Inicialização ---
+  if(state.users.length===0){
+    seedSample(); // já popula 100 alunos e renderiza
+  } else {
+    renderUsers();
+    buildChart();
+  }
+
+});
+
+
     // start auto if you want uncomment:
     // start();
 
@@ -777,11 +958,9 @@ border-bottom: 1px solid #ddd;
 
     // good measure
     console.log('Simulador pronto — salve como HTML e abra no navegador.');
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script>
+
+
 // ---------- UTIL ----------
 const qs = s => document.querySelector(s);
 const qsa = s => document.querySelectorAll(s);
@@ -792,6 +971,72 @@ const KEY_STUDENTS = 'gym_students';
 const KEY_EQUIP = 'gym_equipments';
 const KEY_BOOK = 'gym_bookings';
 const KEY_PLANS = 'gym_plans';
+
+
+// Função auxiliar para escolher aleatoriamente
+function randomChoice(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// Gera 40 equipamentos aleatórios
+function seedEquipments() {
+  const equips = [];
+  const equipNames = [
+    'Esteira','Bicicleta','Elíptico','Remo','Supino','Leg Press','Puxador','Crossover',
+    'Agachamento','Stepper','Abdominal','Barra Fixa','Prensa de Peito','Tríceps',
+    'Rosca Bíceps','Flexora','Extensora','Halter','Kettlebell','Medicine Ball',
+    'Jump','Corda','Banco','Anilhas','Cross Trainer','Roda Abdominal','Puxada Alta',
+    'Puxada Baixa','Leg Curl','Trap Bar','Battle Rope','TRX','Escada','Plataforma','Saco de Boxe',
+    'Smith','Banco Inclinado','Banco Declinado','Peso Livre','Step Aeróbico','Bola Suíça'
+  ];
+  const equipTypes = ['Cardio','Força','Funcional','Alongamento','Livre'];
+  const statusList = ['operando','manutencao','quebrado'];
+
+  for(let i = 0; i < 40; i++){
+    equips.push({
+      id: uid(),
+      name: `${equipNames[i]} ${i < 10 ? '0'+(i+1) : i+1}`,
+      desc: randomChoice(equipTypes),
+      status: randomChoice(statusList)
+    });
+  }
+
+  save(KEY_EQUIP, equips);
+  renderEquipments();
+  return equips;
+}
+
+// Função para carregar equipamentos
+function loadEquipments() {
+  const equips = load(KEY_EQUIP) || [];
+  if(equips.length === 0) return seedEquipments(); // se não existir, gera
+  return equips;
+}
+
+// Renderiza na tabela
+function renderEquipments() {
+  const equips = loadEquipments();
+  const tbody = document.querySelector('#equipTable tbody');
+  tbody.innerHTML = '';
+
+  equips.forEach(e => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${e.name}</td>
+      <td>${e.desc}</td>
+      <td>${e.status}</td>
+      <td>
+        <button data-id="${e.id}" data-action="edit-e" class="btn btn-sm btn-primary">Editar</button>
+        <button data-id="${e.id}" data-action="del-e" class="btn btn-sm btn-danger">Remover</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+ loadEquipments();
+  renderEquipments();
+  renderEquipments();
 
 // ---------- APP STATE ----------
 function load(key){ try{ return JSON.parse(localStorage.getItem(key)) || [] }catch(e){return []}}
@@ -815,7 +1060,9 @@ function updateCounts(){ const students = load(KEY_STUDENTS); const equips = loa
 function refreshStudentsTable(){ const students = load(KEY_STUDENTS); const tbody = qs('#studentsTable tbody'); tbody.innerHTML='';
   students.forEach(s=>{
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${s.name}</td><td>${s.cpf||''}</td><td>${s.phone||''}</td><td>${s.email||''}</td><td>${s.plan||''}</td><td>${s.status}</td><td class="table-actions"><button class="btn btn-sm btn-primary" data-id="${s.id}" data-action="edit">Editar</button><button class="btn btn-sm btn-danger" data-id="${s.id}" data-action="del">Excluir</button></td>`;
+    tr.innerHTML = `<td>${s.name}</td><td>${s.cpf||''}</td><td>${s.phone||''}</td><td>${s.email||''}</td><td>${s.plan||''}</td><td>${s.status}</td><td class="table-actions">
+      <button class="btn btn-sm btn-primary" data-id="${s.id}" data-action="edit">Editar</button>
+      <button class="btn btn-sm btn-danger" data-id="${s.id}" data-action="del">Excluir</button></td>`;
     tbody.appendChild(tr);
   })
 }
@@ -849,65 +1096,13 @@ function refreshBookingsTable(){ const bookings = load(KEY_BOOK); const tbody = 
 // ---------- QUICK LIST ----------
 function updateQuickList(){ const students = load(KEY_STUDENTS); const equips = load(KEY_EQUIP);
   const html = `
-    <div><strong>Últimos 3 alunos</strong><ul>${students.slice(-3).reverse().map(s => `<li>${s.name} <small class="text-muted">(${s.status})</small></li>`).join('')}</ul></div>
+    <div><strong>Últimos alunos</strong><ul>${students.slice(-5).reverse().map(s => `<li>${s.name} <small class="text-muted">(${s.status})</small></li>`).join('')}</ul></div>
     <div><strong>Equipamentos com atenção</strong><ul>${equips.filter(e=>e.status!=='operando').slice(0,5).map(e=>`<li>${e.name} <small>(${e.status})</small></li>`).join('')||'<li><small class="text-muted">Nenhum</small></li>'}</ul></div>
   `;
   qs('#quickList').innerHTML = html;
 }
 
 // ---------- CHART ----------
-let chart;
-function buildChart(){
-  const ctx = qs('#chartEnrollments');
-  if(chart) chart.destroy();
-
-  const students = load(KEY_STUDENTS);
-
-  // pega mês e ano atuais
-  const now = new Date();
-  const currentMonth = now.getMonth();
-  const currentYear  = now.getFullYear();
-
-  // descobre quantos dias tem esse mês
-  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-  // inicializa array de contagem
-  const days = Array.from({length: daysInMonth}, (_,i)=>0);
-
-  students.forEach(s=>{
-    const d = new Date(s.createdAt || Date.now());
-    if(d.getMonth() === currentMonth && d.getFullYear() === currentYear){
-      days[d.getDate()-1]++; // dia começa em 1, índice em 0
-    }
-  });
-
-  // gera labels: 1, 2, 3, ... até último dia do mês
-  const labels = Array.from({length: daysInMonth}, (_,i)=> (i+1).toString());
-
-  chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        label: 'Novos cadastros no mês',
-        data: days,
-        fill: false,
-        borderColor: '#36a2eb',
-        backgroundColor: '#36a2eb',
-        tension: 0.3
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: true }
-      },
-      scales: {
-        y: { beginAtZero: true }
-      }
-    }
-  });
-}
 
 // ---------- ACTIONS ----------
 // Delegation for students table
@@ -970,25 +1165,219 @@ qs('#formBooking').addEventListener('submit', e=>{ e.preventDefault(); const id 
 // ---------- BUTTONS ----------
 qs('#openAddStudent').addEventListener('click', ()=>openStudentModal()); qs('#addStudentBtnTop').addEventListener('click', ()=>openStudentModal()); qs('#openEquip').addEventListener('click', ()=>openEquipModal()); qs('#openBooking').addEventListener('click', ()=>openBookingModal()); qs('#openPlan').addEventListener('click', ()=>openPlanModal());
 
-qs('#btnReset').addEventListener('click', ()=>{ if(confirm('Limpar todos os dados locais?')){ localStorage.removeItem(KEY_STUDENTS); localStorage.removeItem(KEY_EQUIP); localStorage.removeItem(KEY_BOOK); localStorage.removeItem(KEY_PLANS); refreshAll(); } })
 
-qs('#openSample').addEventListener('click', ()=>{ if(confirm('Adicionar dados de exemplo?')){ seedSample(); refreshAll(); } })
 
 // ---------- SAMPLE DATA ----------
-function seedSample(){ const students = [];
-  const names=['Ana','Bruno','Carlos','Daniela','Eduardo','Fabiana','Gustavo','Helena','Igor','Julia'];
-  for(let i=0;i<12;i++){ const created = new Date(); created.setMonth(i); students.push({id:uid(), name:names[i%names.length]+' '+(Math.floor(Math.random()*900)+100), cpf:'000.000.000-0'+i, phone:'(99)9'+(10000000+i), email: names[i%names.length].toLowerCase()+i+'@mail.com', plan: ['Mensal','Trimestral','Anual'][i%3], status: ['ativo','inativo','pendente'][i%3], createdAt: created.getTime() }) }
-  const equips = [{id:uid(), name:'Esteira 01', desc:'Cardio', status:'operando'},{id:uid(), name:'Bicicleta 01', desc:'Cardio', status:'manutencao'},{id:uid(), name:'Supino', desc:'Força', status:'quebrado'}];
-  const plans = [{id:uid(), name:'Mensal', duration:'mensal', value:120},{id:uid(), name:'Trimestral', duration:'trimestral', value:300},{id:uid(), name:'Anual', duration:'anual', value:1000}];
-  const bookings = [{id:uid(), studentId:students[0].id, studentName:students[0].name, date:new Date().toISOString(), className:'Avaliação inicial', status:'agendado'}];
-  save(KEY_STUDENTS, students); save(KEY_EQUIP, equips); save(KEY_PLANS, plans); save(KEY_BOOK, bookings);
+
+// VARIÁVEL GLOBAL
+let chart; // declare fora de qualquer função
+
+function buildChart(){
+  const ctx = document.querySelector('#chartEnrollments');
+
+  // destrói instância anterior se existir
+  if(chart) chart.destroy();
+
+  const students = load(KEY_STUDENTS);
+
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear  = now.getFullYear();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const days = Array.from({length: daysInMonth}, (_,i)=>0);
+
+  students.forEach(s=>{
+    const d = new Date(s.createdAt || Date.now());
+    if(d.getMonth() === currentMonth && d.getFullYear() === currentYear){
+      days[d.getDate()-1]++;
+    }
+  });
+
+  const labels = Array.from({length: daysInMonth}, (_,i)=> (i+1).toString());
+
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Novos cadastros no mês',
+        data: days,
+        fill: false,
+        borderColor: '#36a2eb',
+        backgroundColor: '#36a2eb',
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: true } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
 }
 
-// ---------- REFRESH ALL ----------
+  const students = [];
+// Marcar 20 alunos como novos
+function markNewStudents(students) {
+  // embaralha o array
+  const shuffled = students.sort(() => 0.5 - Math.random());
+  const newStudents = shuffled.slice(0, 20);
+
+  newStudents.forEach(s => {
+    s.isNew = true;
+    // define a data de criação para o mês atual
+    const now = new Date();
+    const day = Math.floor(Math.random() * 28) + 1;
+    s.createdAt = new Date(now.getFullYear(), now.getMonth(), day).getTime();
+  });
+}
+
+// No buildChart
+students.forEach(s => {
+  const d = new Date(s.createdAt || Date.now());
+  if(s.isNew && d.getMonth() === currentMonth && d.getFullYear() === currentYear){
+    days[d.getDate()-1]++;
+  }
+});
+
+// ---------- SAMPLE DATA ----------
+  qs('#openSample').addEventListener('click', () => {
+  if (confirm('Adicionar dados de exemplo?')) {
+    seedSample();
+    refreshAll();
+  }
+});
+
+
+// Função para gerar 100 alunos aleatórios
+function seedSample() {
+ 
+
+  const firstNames = ['Ana','Bruno','Carlos','Daniela','Eduardo','Fabiana','Gustavo','Helena','Igor','Julia','Marcos','Patrícia','Rodrigo','Sofia','Thiago','Vanessa','William','Yasmin','Zeca','Paula','Rafael','Fernanda','Clara','Leonardo'];
+  const lastNames  = ['Silva','Souza','Oliveira','Santos','Pereira','Ferreira','Almeida','Costa','Nascimento','Rodrigues','Gomes','Martins','Barbosa','Melo','Cardoso','Azevedo','Dias','Freitas','Teixeira','Correia'];
+  const plans      = ['Mensal','Trimestral','Anual'];
+  const statusList = ['ativo','inativo','pendente'];
+
+  const randomChoice = arr => arr[Math.floor(Math.random() * arr.length)];
+  const randomCPF = () => Array.from({length:11}, () => Math.floor(Math.random()*10)).join('').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  const randomPhone = () => `(63) 9${Array.from({length:8},()=>Math.floor(Math.random()*10)).join('')}`;
+  const randomFullName = () => `${randomChoice(firstNames)} ${randomChoice(lastNames)} ${randomChoice(lastNames)}`;
+
+  const now = new Date();
+
+  for(let i=0; i<100; i++){
+    const created = new Date(now.getFullYear(), Math.floor(Math.random()*12), Math.floor(Math.random()*28)+1);
+    students.push({
+      id: Math.random().toString(36).slice(2,9),
+      name: randomFullName(),
+      cpf: randomCPF(),
+      phone: randomPhone(),
+      email: `user${i}@mail.com`,
+      plan: randomChoice(plans),
+      status: randomChoice(statusList),
+      createdAt: created.getTime()
+    });
+  }
+
+  // Atualiza tabela e gráfico
+  renderStudents();
+  buildChart();
+}
+
+// Função para renderizar a tabela de alunos
+function renderStudents(list = students) {
+  const tbody = document.querySelector('#studentsTable tbody');
+  tbody.innerHTML = '';
+
+  if(list.length === 0){
+    tbody.innerHTML = '<tr><td colspan="7">Nenhum aluno encontrado</td></tr>';
+    return;
+  }
+
+  list.forEach(s => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${s.name}</td>
+      <td>${s.cpf}</td>
+      <td>${s.phone}</td>
+      <td>${s.email}</td>
+      <td>${s.plan}</td>
+      <td>${s.status}</td>
+      <td>
+        <button class="btn btn-sm btn-primary">Editar</button>
+        <button class="btn btn-sm btn-danger">Excluir</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// Função de busca por nome
+const searchInput = document.querySelector('#searchInput');
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.toLowerCase();
+  const filtered = students.filter(s => s.name.toLowerCase().includes(query));
+  renderStudents(filtered);
+});
+
+// Função para construir gráfico de novos cadastros
+function buildChart(){
+  const ctx = document.querySelector('#chartEnrollments');
+  if(chart) chart.destroy();
+
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear  = now.getFullYear();
+  const daysInMonth = new Date(currentYear, currentMonth+1, 0).getDate();
+  const days = Array.from({length: daysInMonth}, ()=>0);
+
+  students.forEach(s=>{
+    const d = new Date(s.createdAt);
+    if(d.getMonth() === currentMonth && d.getFullYear() === currentYear){
+      days[d.getDate()-1]++;
+    }
+  });
+
+  const labels = Array.from({length: daysInMonth}, (_,i)=> (i+1).toString());
+
+  chart = new Chart(ctx, {
+    type:'line',
+    data:{
+      labels,
+      datasets:[{
+        label:'Novos cadastros no mês',
+        data:days,
+        borderColor:'#36a2eb',
+        backgroundColor:'#36a2eb',
+        fill:false,
+        tension:0.3
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{display:true}},
+      scales:{y:{beginAtZero:true}}
+    }
+  });
+}
+
+// Botão para adicionar os 100 alunos
+document.querySelector('#openSample').addEventListener('click', () => {
+  if(confirm('Adicionar 100 alunos de exemplo?')){
+    seedSample();
+  }
+});
+
+  // Chama a função para gerar alunos
+  seedSample();
+  // ---------- REFRESH ALL ----------
 function refreshAll(){ updateCounts(); refreshStudentsTable(); refreshEquipTable(); refreshPlanTable(); refreshBookingsTable(); updateQuickList(); buildChart(); }
 
 // initial
 refreshAll();
+});
+
+
 
 </script>
 </body>
