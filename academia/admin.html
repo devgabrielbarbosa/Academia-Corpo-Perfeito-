@@ -78,7 +78,9 @@ border-bottom: 1px solid #ddd;
         <a class="nav-link text-white" href="#" data-target="planos">Planos</a>
         <a class="nav-link text-white" href="#" data-target="notfication">Notificação</a>
       </div>
-
+      <div class="mt-auto">
+        <button id="btnReset" class="btn btn-sm btn-outline-light w-100">Resetar dados</button>
+      </div>
     </nav>
 
     <main class="col-lg-10 p-4">
@@ -1165,6 +1167,7 @@ qs('#formBooking').addEventListener('submit', e=>{ e.preventDefault(); const id 
 // ---------- BUTTONS ----------
 qs('#openAddStudent').addEventListener('click', ()=>openStudentModal()); qs('#addStudentBtnTop').addEventListener('click', ()=>openStudentModal()); qs('#openEquip').addEventListener('click', ()=>openEquipModal()); qs('#openBooking').addEventListener('click', ()=>openBookingModal()); qs('#openPlan').addEventListener('click', ()=>openPlanModal());
 
+qs('#btnReset').addEventListener('click', ()=>{ if(confirm('Limpar todos os dados locais?')){ localStorage.removeItem(KEY_STUDENTS); localStorage.removeItem(KEY_EQUIP); localStorage.removeItem(KEY_BOOK); localStorage.removeItem(KEY_PLANS); refreshAll(); } })
 
 
 // ---------- SAMPLE DATA ----------
